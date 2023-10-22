@@ -18,7 +18,6 @@ export default function Settings(props){
 			<View style={containers.scroll}><ScrollView>
 				<SettingItemSwitch title={settings.DarkTheme.title[lang]} value={theme=='dark'} dispatch={props.dispatchers.DarkTheme} />
 				<SettingItemOption title={settings.AppLanguage.title[lang]} options={settings.AppLanguage.options[lang]} selected={settings.AppLanguage.options[lang][lang]} dispatch={props.dispatchers.AppLanguage} />
-				<SettingItemOption title={settings.Calendar.title[lang]} options={settings.Calendar.options[lang]} selected={settings.Calendar.options[lang][context.Calendar]} dispatch={props.dispatchers.Calendar} />
 				<SettingItemOption title={settings.DateStyle.title[lang]} options={settings.DateStyle.options[lang]} selected={settings.DateStyle.options[lang][context.DateStyle]} dispatch={props.dispatchers.DateStyle} />
 				<SettingItemOption title={settings.WeekStart.title[lang]} options={settings.WeekStart.options[lang]} selected={settings.WeekStart.options[lang][context.WeekStart]} dispatch={props.dispatchers.WeekStart} />
 			</ScrollView></View>

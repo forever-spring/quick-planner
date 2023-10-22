@@ -1,4 +1,5 @@
 import { Text, View, ScrollView } from "react-native";
+import { GestureHandlerRootView,GestureDetector, Gesture, Directions } from "react-native-gesture-handler";
 import { useContext } from "react";
 
 import Header from "../components/topBars";
@@ -9,13 +10,16 @@ import { settingsContext } from "../assets/utils/settings";
 
 export default function List(props){
 	const theme = useContext(settingsContext).DarkTheme ? 'dark' : 'light';
+	const swipe = Gesture.Fling().direction(Directions.LEFT).onStart(()=>{
+		props.navigation.navigate('plan');
+	});
 	
 	return(
 		<View style={containers[theme]}>
 			<Header page='list' navigation={props.navigation} navBar={true} />
-			<View style={containers.scroll}><ScrollView>
+			<GestureHandlerRootView style={containers.scroll}><GestureDetector gesture={swipe}><ScrollView>
 				<Text>List</Text>
-			</ScrollView></View>
+			</ScrollView></GestureDetector></GestureHandlerRootView>
 		</View>
 	);
 }

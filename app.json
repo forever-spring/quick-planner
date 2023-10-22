@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "QuickPlanner",
-    "slug": "QuickPlanner",
+    "slug": "Quick Planner",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/expo/icon.png",
@@ -22,7 +22,7 @@
         "foregroundImage": "./assets/expo/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.anonymous.QuickPlanner"
+      "package": "ir.foreverspring.quickplanner"
     },
     "web": {
       "favicon": "./assets/expo/favicon.png"

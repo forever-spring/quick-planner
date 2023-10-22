@@ -15,8 +15,10 @@ import Settings from './screens/settings';
 import List from './screens/list';
 import Plan from './screens/plan';
 import Archive from './screens/archive';
+import Welcome from "./screens/welcome";
 
 import * as Hooks from './assets/utils/settings.js';
+import { initDB } from "./assets/utils/data";
 
 
 const NavStack=createNativeStackNavigator();
@@ -30,24 +32,23 @@ export default function App() {
 		BalooBhaijaan2_500Medium,
 	});
 	const [settingsLoaded, setSettingsLoaded] = useState(false);
+	const [init, setInit] = useState(false);
+	const [db,setDb] = useState(false);
 
 	const appSettings={
 		DarkTheme: theme=='dark' ? true : false,
 		AppLanguage: lang in ['fa','en'] ? lang : 'en',
-		Calendar: 1,
 		DateStyle: 1,
 		WeekStart: 1,
 	};
 	const dispatch={
 		DarkTheme: null,
 		AppLanguage: null,
-		Calendar: null,
 		DateStyle: null,
 		WeekStart: null,
 	};
 	[appSettings.DarkTheme, dispatch.DarkTheme] = useReducer(Hooks.flipTheme, appSettings.DarkTheme);
 	[appSettings.AppLanguage, dispatch.AppLanguage] = useReducer(Hooks.setLang, appSettings.AppLanguage);
-	[appSettings.Calendar, dispatch.Calendar] = useReducer(Hooks.setCal, appSettings.Calendar);
 	[appSettings.DateStyle, dispatch.DateStyle] = useReducer(Hooks.setDateStyle, appSettings.DateStyle);
 	[appSettings.WeekStart, dispatch.WeekStart] = useReducer(Hooks.setWeekStart, appSettings.WeekStart);
 	useEffect(() => {
@@ -70,7 +71,6 @@ export default function App() {
 						case 'DarkTheme':
 							value = (value=='true') ? true : false;
 							break;
-						case 'Calendar':
 						case 'DateStyle':
 						case 'WeekStart':
 							value = Number(value);
@@ -84,9 +84,29 @@ export default function App() {
 		}
 		loadSettings();
 	}, []);
+
+	useEffect(()=>{
+		const initial = async() => {
+			value = await AsyncStorage.getItem('init');
+			if(value==null){
+				await initDB();
+				setDb(true);
+			} else {
+				setInit(true);
+				setDb(true);
+			}
+		};
+		initial();
+	},[]);
 	
-	if(!fontsLoaded || !settingsLoaded) {
+	if(!fontsLoaded || !settingsLoaded || !db) {
 		return null; // replace with loading page
+	} else if(!init) {
+		return (
+			<Hooks.settingsContext.Provider value={appSettings}>
+				<Welcome signal={setInit} />
+			</Hooks.settingsContext.Provider>
+		);
 	} else {
 		return (
 			<NavigationContainer><Hooks.settingsContext.Provider value={appSettings}>
