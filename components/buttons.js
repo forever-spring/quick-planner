@@ -1,5 +1,5 @@
 import { Pressable, Text, StyleSheet, PixelRatio, Image, View } from "react-native";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
 import { icons, textColorInvert, textStyle, imageColorInvert, shadow } from "../assets/utils/common";
 import { settingsContext } from '../assets/utils/settings';
@@ -9,17 +9,21 @@ export function TextButton({label,action,style,layout}){
 	const theme = useContext(settingsContext).DarkTheme ? 'dark' : 'light';
 
 	if(style==undefined){
-		style={};
+		style=StyleSheet.create({});
 	}
 	if(layout==undefined){
-		layout = (obj)=>{return null;};
+		layout = (h)=>{};
 	}
 
 	return (
-		<Pressable onPress={action} style={{...styles.button,...shadow[theme],...style}} 
-			onLayout={(obj)=>layout(obj['nativeEvent']['layout']['height'])}
+		<Pressable 
+			onPress={action} 
+			style={{...shadow[theme],...style,...styles.button}} 
 		>
-			<Text style={{...textStyle.label,...textColorInvert[theme]}}>{label}</Text>
+			<Text 
+				style={{...textStyle.label,...textColorInvert[theme],textAlign:'center'}}
+				onLayout={(obj)=>layout(obj['nativeEvent']['layout']['height'])}
+			>{label}</Text>
 		</Pressable>
 	);
 }
@@ -39,16 +43,51 @@ export function TextIconButton({icon,label,action,style}){
 	);
 }
 
-export function HoverButton({icon,action}){
+export function IconButton ({icon,action}){
 	const theme = useContext(settingsContext).DarkTheme ? 'dark' : 'light';
 
 	return (
+		<Pressable onPress={action} style={{...styles.button,...shadow[theme],...styles.iconButton}}>
+			<Image source={iconSource[icon]} style={{...icons.mediIcon,...imageColorInvert[theme]}} />
+		</Pressable>
+	);
+}
+
+export function HoverButton({icon,action}){
+	return (
 		<View style={styles.hoverView}>
-			<Pressable onPress={action} style={{...styles.button,...shadow[theme],...styles.hoverButton}}>
-				<Image source={iconSource[icon]} style={{...icons.bigIcon,...imageColorInvert[theme]}} />
-			</Pressable>
+			<IconButton icon={icon} action={action}/>
 		</View>
 	);
+}
+
+export function DialButton({icon, labels, actions}){
+	const [open,setOpen] = useState(false);
+
+	const handle = (i)=>{
+		setOpen(false);
+		actions[i]();
+	};
+
+	if(open){
+		return(
+			<View style={styles.hoverView}>
+				{[0,1].map(i=>
+					<TextButton 
+						label={labels[i]} 
+						action={()=>handle(i)} 
+						style={{
+							marginHorizontal:16*PixelRatio.get(),
+							marginVertical:4*PixelRatio.get(),
+						}}
+					/>
+				)}
+				<IconButton icon='close' action={()=>setOpen(false)} />
+			</View>
+		);
+	} else {
+		return (<HoverButton icon={icon} action={()=>setOpen(true)} />);
+	}
 }
 
 const styles = StyleSheet.create({
@@ -64,7 +103,7 @@ const styles = StyleSheet.create({
 		gap: 4*PixelRatio.get(),
 		alignItems: 'center',
 	},
-	hoverButton: {
+	iconButton: {
 		paddingHorizontal: 8*PixelRatio.get(),
 		alignSelf: 'flex-end',
 		margin: 16*PixelRatio.get(),
@@ -79,4 +118,6 @@ const styles = StyleSheet.create({
 const iconSource = {
 	plan: require('../assets/icons/plan-button.png'),
 	archive: require('../assets/icons/archive-button.png'),
+	add: require('../assets/icons/add.png'),
+	close: require('../assets/icons/close.png'),
 }

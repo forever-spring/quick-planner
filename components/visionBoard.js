@@ -6,7 +6,7 @@ import { TextButton } from './buttons';
 
 import { settingsContext } from '../assets/utils/settings';
 import { themeColors } from '../assets/utils/colors';
-import { icons,imageColor,textColor, textStyle, textInput } from '../assets/utils/common';
+import { icons,imageColor,textColor, textStyle, textInput, textColorPrimary } from '../assets/utils/common';
 import { visionBoard } from '../assets/utils/translations';
 
 
@@ -46,6 +46,7 @@ export default function VisionBoard(){
 		<View style={styles[theme]}>
 			<Modal visible={goalModal} transparent={true} animationType='fade'><View style={modals[theme]}>
 				<TextInput 
+					selectionColor={themeColors.accent.original} 
 					onChangeText={setGoal} 
 					placeholder={visionBoard.fills[lang][0]} 
 					placeholderTextColor={themeColors.gray} 
@@ -57,6 +58,7 @@ export default function VisionBoard(){
 			</View></Modal>
 			<Modal visible={whyModal} transparent={true} animationType='fade'><View style={modals[theme]}>
 				<TextInput 
+					selectionColor={themeColors.accent.original} 
 					onChangeText={setWhy} 
 					placeholder={visionBoard.fills[lang][1]} 
 					placeholderTextColor={themeColors.gray} 
@@ -69,13 +71,13 @@ export default function VisionBoard(){
 			<View style={styles.item}>
 				<Image style={{...icons.hugeIcon,...imageColor.accent}} source={require('../assets/icons/goal.png')} />
 				<Pressable style={styles.text} onLongPress={toggleGoalModal}>
-					<Text style={{...textStyle.label,...textColor[theme]}}>{goal}</Text>
+					<Text style={{...textStyle.label,...textColorPrimary[theme]}}>{goal}</Text>
 				</Pressable>
 			</View>
 			<View style={styles.item}>
 				<Image style={{...icons.hugeIcon,...imageColor.accent}} source={require('../assets/icons/why.png')} />
 				<Pressable style={styles.text} onLongPress={toggleWhyModal}>
-					<Text style={{...textStyle.label,...textColor[theme]}}>{why}</Text>
+					<Text style={{...textStyle.label,...textColorPrimary[theme]}}>{why}</Text>
 				</Pressable>
 			</View>
 		</View>

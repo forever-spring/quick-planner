@@ -6,6 +6,10 @@ export const icons = StyleSheet.create({
 		width: 10*PixelRatio.get(),
 		height: 10*PixelRatio.get(),
 	},
+	mediIcon: {
+		width: 15*PixelRatio.get(),
+		height: 15*PixelRatio.get()
+	},
 	bigIcon: {
 		width: 20*PixelRatio.get(),
 		height: 20*PixelRatio.get(),
@@ -49,21 +53,15 @@ export const textStyle = StyleSheet.create({
 		fontSize: 22*PixelRatio.getFontScale(),
 		lineHeight: 32*PixelRatio.getFontScale(),
 		verticalAlign: 'middle',
+		textAlignVertical: 'center',
 		textAlign: 'justify',
-	},
-	bodyStroked:{
-		fontFamily: 'BalooBhaijaan2_400Regular',
-		fontSize: 22*PixelRatio.getFontScale(),
-		lineHeight: 32*PixelRatio.getFontScale(),
-		verticalAlign: 'middle',
-		textAlign: 'justify',
-		textDecorationLine: 'line-through',
 	},
 	label:{
 		fontFamily: 'BalooBhaijaan2_500Medium',
 		fontSize: 22*PixelRatio.getFontScale(),
 		lineHeight: 32*PixelRatio.getFontScale(),
 		verticalAlign: 'middle',
+		textAlignVertical: 'center',
 		textAlign: 'justify',
 	},
 	title:{
@@ -78,6 +76,7 @@ export const textStyle = StyleSheet.create({
 		fontSize: 30*PixelRatio.getFontScale(),
 		lineHeight: 40*PixelRatio.getFontScale(),
 		verticalAlign: 'middle',
+		textAlignVertical: 'center',
 		textAlign: 'justify',
 	},
 });
@@ -96,7 +95,6 @@ export const textColor = StyleSheet.create({
 		color: themeColors['primary']['original'],
 	}
 });
-
 export const textColorInvert = StyleSheet.create({
 	dark:{
 		color: themeColors['dark'],
@@ -104,6 +102,14 @@ export const textColorInvert = StyleSheet.create({
 	light:{
 		color: themeColors['light'],
 	}
+});
+export const textColorPrimary = StyleSheet.create({
+	dark:{
+		color: themeColors.primary.lighter,
+	},
+	light:{
+		color: themeColors.primary.darker,
+	},
 });
 
 export const containers = StyleSheet.create({
@@ -170,7 +176,8 @@ export const modalBasic = StyleSheet.create({
 		margin: 8*PixelRatio.get(),
 		borderRadius: 8*PixelRatio.get(),
 		padding: 8*PixelRatio.get(),
-		gap: 8*PixelRatio.get()
+		gap: 8*PixelRatio.get(),
+		width: '90%',
 	}
 });
 
@@ -178,7 +185,7 @@ export const textInput = StyleSheet.create({
 	borderBottom: {
 		padding: 4*PixelRatio.get(),
 		paddingVertical: 2*PixelRatio.get(),
-		borderBottomWidth: 1*PixelRatio.get(),
+		borderBottomWidth: 0.75*PixelRatio.get(),
 	},
 	roundCorner: {
 		paddingHorizontal: 4*PixelRatio.get(),

@@ -176,20 +176,108 @@ export const planPage = {
 		}
 	},
 	warning:{
+		en: 'You are about to archive this plan, after which you will not be able to make any edits. Do you want to proceed?',
+		fa: 'شما در حال آرشیو کردن این برنامه هستید و دیگر قادر نخواهید بود آن را ویرایش کنید. آیا می‌خواهید ادامه دهید؟',
+	}
+};
+
+export const listPage = {
+	hover: {
+		en: [
+			'New Category',
+			'New Task'
+		],
+		fa: [
+			'دسته جدید',
+			'کار جدید'
+		],
+	},
+};
+
+export const createModals = {
+	newCat: {
 		label: {
-			en: 'You are about to archive this plan, after which you will not be able to make any edits. Do you want to proceed?',
-			fa: 'شما در حال آرشیو کردن این برنامه هستید و دیگر قادر نخواهید بود آن را ویرایش کنید. آیا می‌خواهید ادامه دهید؟',
+			en: 'Create New Category',
+			fa: 'ساخت دسته‌ی جدید',
 		},
-		buttons: {
-			en: [
-				'Go Back',
-				'Proceed'
+		fill: {
+			en: 'Category Title',
+			fa: 'عنوان دسته',
+		},
+		color: {
+			en: 'Color',
+			fa: 'رنگ',
+		},
+	},
+	newTask: {
+		label: {
+			en: 'Create New Task',
+			fa: 'ساخت کار جدید',
+		},
+		fill: {
+			en: 'Task Title',
+			fa: 'عنوان کار',
+		},
+		cat: {
+			en: 'pick category',
+			fa: 'انتخاب دسته',
+		},
+	},
+	button: {
+		en: [
+			'Create',
+			'Save Changes'
+		],
+		fa: [
+			'بساز',
+			'ذخیره‌ی تغییرات'
+		]
+	},
+	warn: {
+		category: {
+			en: 'Category Title is needed!',
+			fa: 'عنوان دسته وارد نشده‌است!',
+		},
+		task:{
+			en:[
+				'Task Title is needed!',
+				'Each task needs a category!',
+				'An Empty Task cannot be created! Press the back button if you don\'t want to create a task.'
 			],
-			fa: [
-				'برگرد',
-				'ادامه'
+			fa:[
+				'عنوان کار را وارد کنید!',
+				'هر کار باید به یک دسته تعلق داشته‌باشد!',
+				'نمی‌توان یک کار بدون محتوا ساخت! اگر نمی‌خواهید کار جدیدی بسازید، از دکمه‌ی برگشت استفاده کنید.',
 			],
 		}
 	}
+};
+
+export const warnButton = {
+	one: {
+		en: 'Got It',
+		fa: 'فهمیدم',
+	},
+	two: {
+		en: [
+			'Go Back',
+			'Proceed'
+		],
+		fa: [
+			'برگرد',
+			'ادامه بده'
+		],
+	},
+};
+
+export const deleteWarn = {
+	cat: {
+		en: 'You are about to delete this category and all its tasks from the app. The tasks will also be deleted from any plan they are in. Are You Sure?',
+		fa: 'شما در حال حذف این دسته و کارهای آن هستید. کارها همچنین از برنامه‌ریزی‌ها حذف خواهند شد. آیا مطمئن هستید؟',
+	},
+	task: {
+		en: 'You are about to delete this task. It will also be deleted from any plan it is in. Are You Sure?',
+		fa: 'شما در حال حذف این کار هستید. این کار همچنین از برنامه‌ریزی‌ها حذف خواهد شد. آیا مطمئن هستید؟',
+	},
 };
 

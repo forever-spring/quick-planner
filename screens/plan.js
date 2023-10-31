@@ -6,13 +6,16 @@ import { useContext, useEffect, useState, useRef } from "react";
 import Header from "../components/topBars";
 import VisionBoard from "../components/visionBoard";
 import { PlannedItem } from "../components/items";
-import { TextIconButton, HoverButton, TextButton } from "../components/buttons";
+import { TextIconButton, HoverButton } from "../components/buttons";
+import { WarningModalTwo } from "../components/warn";
+import { CategoryItem } from "../components/items";
 
 import { containers, textColor, textStyle, textInput, imageColor, icons, shadow, modalBasic } from "../assets/utils/common";
 import { planPage, weekDays } from "../assets/utils/translations";
 import { settingsContext } from "../assets/utils/settings";
-import { addPlan, getPlan } from "../assets/utils/data";
 import { themeColors } from "../assets/utils/colors";
+
+import { addPlan, getPlan, getCategoriesFull, addPlanned, getPlanned, delPlanned } from "../assets/utils/data";
 
 
 export default function Plan(props){
@@ -29,14 +32,6 @@ export default function Plan(props){
 
 	const [plan, setPlan] = useState({});
 	const [warning, setWarning] = useState(false);
-	const [height, setHeight] = useState(0);
-	
-	const updateH = (h) => {
-		let newH=h+16*PixelRatio.get();
-		if(newH>height){
-			setHeight(newH);
-		}
-	}
 
 	useEffect(()=>{
 		const getActive = async() => {
@@ -84,35 +79,49 @@ export default function Plan(props){
 					<VisionBoard />
 					<DayComponent day={plan.day} />
 					<GratitudesComponent values={plan.getGratitudes()} action={setGratitudes} />
-					<PlannedComponent tasks={plan.planned} />
+					<PlannedComponent tasks={plan.planned} planId={plan.id} />
 				</ScrollView></GestureDetector></GestureHandlerRootView>
 				<HoverButton icon='archive' action={()=>setWarning(true)} />
-				<Modal transparent={true} onRequestClose={()=>setWarning(false)} visible={warning}>
-					<View style={modalBasic[theme]}><View style={{...styles[theme],...shadow[theme],...modalBasic.box}}>
-						<Text style={{...textStyle.body,...textColor[theme]}}>{planPage.warning.label[lang]}</Text>
-						<View style={{...styles.buttons,maxHeight: height}}>
-							<TextButton label={planPage.warning.buttons[lang][0]} action={()=>setWarning(false)} layout={updateH} />
-							<TextButton label={planPage.warning.buttons[lang][1]} action={archivePlan} layout={updateH} />
-						</View>
-					</View></View>
+				<Modal transparent={true} onRequestClose={()=>setWarning(false)} animationType="fade" visible={warning}>
+					<WarningModalTwo text={planPage.warning[lang]} back={()=>setWarning(false)} ok={archivePlan} />
 				</Modal>
 			</View>
 		);
 	}
 }
 
-function PlannedComponent({tasks}){
+function PlannedComponent({tasks,planId}){
 	const theme = useContext(settingsContext).DarkTheme?'dark':'light';
 	const lang = useContext(settingsContext).AppLanguage;
 
 	const [open,setOpen] = useState(false);
+	const [planned,setPlanned] = useState(tasks);
+	const categories = useRef([]);
+	const openModal = async()=>{
+		categories.current=await getCategoriesFull();
+		setOpen(true);
+	};
+	const picked = async(taskId)=>{
+		setPlanned(await addPlanned(planId,taskId,planned.length+1));
+		setOpen(false);
+	};
+	const refresh = async(taskId)=>{
+		await delPlanned(planId,taskId);
+		setPlanned(await getPlanned(planId));
+	};
 
 	return (
 		<View style={styles.planned}>
-			<Modal transparent={true} visible={open} onRequestClose={()=>setOpen(false)}></Modal>
+			<Modal transparent={true} visible={open} onRequestClose={()=>setOpen(false)} animationType="fade">
+				<View style={modalBasic[theme]}><View style={{...modalBasic.box,...shadow[theme],...styles[theme],...styles.pickModal}}>
+					<ScrollView>
+						{categories.current.map(cat=><CategoryItem category={cat} full={false} picked={picked} />)}
+					</ScrollView>
+				</View></View>
+			</Modal>
 			<Text style={{...textStyle.label,...textColor[theme]}}>{planPage.planned.label[lang]}</Text>
-			<View style={styles.plannedList}>{tasks.map(task=><PlannedItem planned={task} />)}</View>
-			<TextIconButton icon='plan' label={planPage.planned.button[lang]} action={()=>setOpen(true)} />
+			<View style={styles.plannedList}>{planned.map(task=><PlannedItem planned={task} refresh={refresh} />)}</View>
+			<TextIconButton icon='plan' label={planPage.planned.button[lang]} action={openModal} />
 		</View>
 	);
 }
@@ -131,28 +140,31 @@ function GratitudesComponent({values,action}){
 			<View style={styles.gratitudeInput}>
 				<Text style={{...textStyle.body,...textColor[theme]}}>1.</Text>
 				<TextInput 
+					selectionColor={themeColors.accent.original} 
 					multiline={true} 
 					value={one} 
 					onChangeText={(val)=>{setOne(val);action(val,two,three);}} 
-					style={{...textInput.borderBottom,...textStyle.body,...textColor[theme],...styles.gratitude}}
+					style={{...textInput.borderBottom,...textStyle.body,...textColor[theme],...styles.gratitude,...textInput[theme]}}
 				/>
 			</View>
 			<View style={styles.gratitudeInput}>
 				<Text style={{...textStyle.body,...textColor[theme]}}>2.</Text>
 				<TextInput 
+					selectionColor={themeColors.accent.original} 
 					multiline={true} 
 					value={two} 
 					onChangeText={(val)=>{setTwo(val);action(one,val,three);}} 
-					style={{...textInput.borderBottom,...textStyle.body,...textColor[theme],...styles.gratitude}}
+					style={{...textInput.borderBottom,...textStyle.body,...textColor[theme],...styles.gratitude,...textInput[theme]}}
 				/>
 			</View>
 			<View style={styles.gratitudeInput}>
 				<Text style={{...textStyle.body,...textColor[theme]}}>3.</Text>
 				<TextInput 
+					selectionColor={themeColors.accent.original} 
 					multiline={true} 
 					value={three} 
 					onChangeText={(val)=>{setThree(val);action(one,two,val);}} 
-					style={{...textInput.borderBottom,...textStyle.body,...textColor[theme],...styles.gratitude}}
+					style={{...textInput.borderBottom,...textStyle.body,...textColor[theme],...styles.gratitude,...textInput[theme]}}
 				/>
 			</View>
 		</View>
@@ -170,6 +182,7 @@ function DayComponent({day}){
 	return(
 		<View style={styles.dayView}>
 			<TextInput 
+				selectionColor={themeColors.accent.original} 
 				onChangeText={(val)=>{
 					if(date[0]=='date'){
 						setD(val);
@@ -182,9 +195,10 @@ function DayComponent({day}){
 				value={date[0]=='date'?d:m} 
 				placeholder={planPage.fills[date[0]][lang]} 
 				placeholderTextColor={themeColors.gray} 
-				style={{...textStyle.body,...textColor[theme],...textInput.roundCorner}} 
+				style={{...textStyle.body,...textColor[theme],...textInput.roundCorner,...textInput[theme]}} 
 			/>
 			<TextInput 
+				selectionColor={themeColors.accent.original} 
 				onChangeText={(val)=>{
 					if(date[1]=='date'){
 						setD(val);
@@ -197,9 +211,10 @@ function DayComponent({day}){
 				value={date[1]=='date'?d:m} 
 				placeholder={planPage.fills[date[1]][lang]} 
 				placeholderTextColor={themeColors.gray} 
-				style={{...textStyle.body,...textColor[theme],...textInput.roundCorner}} 
+				style={{...textStyle.body,...textColor[theme],...textInput.roundCorner,...textInput[theme]}} 
 			/>
 			<TextInput 
+				selectionColor={themeColors.accent.original} 
 				onChangeText={(val)=>{
 					setY(val);
 					day.setYear(val);
@@ -207,7 +222,7 @@ function DayComponent({day}){
 				value={y} 
 				placeholder={planPage.fills.year[lang]} 
 				placeholderTextColor={themeColors.gray} 
-				style={{...textStyle.body,...textColor[theme],...textInput.roundCorner}} 
+				style={{...textStyle.body,...textColor[theme],...textInput.roundCorner,...textInput[theme]}} 
 			/>
 			<DropDown day={day} options={calcOptions(useContext(settingsContext).WeekStart)} />
 		</View>
@@ -225,7 +240,7 @@ function DropDown({day,options}){
 	
 	const openMenu = ()=>{
 		elemRef.current.measure((x,y,width,height,pageX,pageY)=>{
-			setPose(StyleSheet.create({left:pageX+PixelRatio.get(),top:pageY+8*PixelRatio.get()}));
+			setPose(StyleSheet.create({left:pageX,top:pageY-16*PixelRatio.get()}));
 		});
 		setOpen(true);
 	};
@@ -242,10 +257,14 @@ function DropDown({day,options}){
 				<Text style={{...textStyle.body,...textColor.gray}}>{value===''?'Week Day':weekDays[lang][value]}</Text>
 				<Image style={{...imageColor[theme],...icons.bigIcon}} source={require('../assets/icons/dropdown.png')} />
 			</Pressable>
-			<Modal transparent={true} visible={open} onRequestClose={()=>setOpen(false)}>
+			<Modal transparent={true} visible={open} animationType="fade" onRequestClose={()=>setOpen(false)}>
 			<View><View style={{...styles.dropDownMenu,...styles[theme],...shadow[theme],...pose}}>
+				<Pressable ref={elemRef} onPress={()=>setOpen(false)} style={{...styles.dropDown,borderColor:themeColors[theme]}}>
+					<Text style={{...textStyle.body,...textColor.gray}}>{value===''?'Week Day':weekDays[lang][value]}</Text>
+					<Image style={{...imageColor[theme],...icons.bigIcon}} source={require('../assets/icons/dropdown.png')} />
+				</Pressable>
 				{options.map((option)=>{
-					if(value!==String(option)){
+					if(value!=String(option)){
 						return(
 							<Pressable style={styles.dropDownItem} onPress={()=>{pick(option)}}>
 								<Text style={{...textStyle.body,...textColor[theme]}}>{weekDays[lang][option]}</Text>
@@ -292,9 +311,9 @@ const styles = StyleSheet.create({
 		backgroundColor: themeColors.dark,
 	},
 	gratitudeView: {
-		marginHorizontal: 16*PixelRatio.get(),
+		margin: 16*PixelRatio.get(),
 		flex:1,
-		gap: 4*PixelRatio.get(),
+		gap: 8*PixelRatio.get(),
 	},
 	gratitudeInput: {
 		flex:1,
@@ -313,16 +332,14 @@ const styles = StyleSheet.create({
 		alignItems: 'flex-start',
 		margin: 16*PixelRatio.get(),
 		marginTop: 32*PixelRatio.get(),
+		gap: 8*PixelRatio.get(),
 	},
 	plannedList:{
-		margin: 8*PixelRatio.get(),
+		marginStart: 4*PixelRatio.get(),
+		flex:1
 	},
-	buttons: {
-		flex: 1,
-		flexDirection: 'row',
-		justifyContent: 'flex-end',
-		alignItems: 'center',
-		gap: 4*PixelRatio.get(),
+	pickModal:{
+		height: '75%',
 	}
 });
 

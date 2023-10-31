@@ -1,5 +1,4 @@
 import * as sqlite from 'expo-sqlite';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { weekDays } from "./translations";
 
@@ -80,12 +79,23 @@ class Day {
 }
 
 class Planned {
-	constructor(task,order){
-		this.task=task; // to be retrieved before construction
-		this.order=order;
+	constructor(taskId,rank){
+		this.taskId=taskId;
+		this.rank=rank;
 	}
-	storeTask(){
-		return this.task.id;
+	async getTask(){
+		const db= sqlite.openDatabase('quickPlanner');
+		let [task] = await db.execAsync([
+			{sql:'SELECT * FROM task WHERE rowid=?',args:[this.taskId]}
+		],true);
+		task=task.rows[0];
+		let [cat] = await db.execAsync([
+			{sql:'SELECT * FROM category WHERE rowid=?',args:[task.category]}
+		],true);
+		cat=cat.rows[0];
+		this.task=new Task(this.taskId,task.name,task.done, new TaskCategory(task.category,cat.name,cat.color));
+		db.closeAsync();
+		return this.task;
 	}
 }
 
@@ -99,13 +109,80 @@ class Task {
 	storeCategory(){
 		return this.category.id;
 	}
+	async flipDone(){
+		this.done=!this.done;
+		const db=sqlite.openDatabase('quickPlanner');
+		await db.execAsync([
+			{sql:'UPDATE task SET done=? WHERE rowid=?',args:[Number(this.done),this.id]}
+		],false);
+		db.closeAsync();
+	}
+	async del(){
+		const db=sqlite.openDatabase('quickPlanner');
+		await db.execAsync([
+			{sql:'DELETE FROM task WHERE rowid=?',args:[this.id]},
+			{sql:'DELETE FROM planned WHERE task=?',args:[this.id]}
+		],false);
+		db.closeAsync();
+	}
+	async update(name,cat){
+		// cat is catId
+		const db=sqlite.openDatabase('quickPlanner');
+		let [ct]=await db.execAsync([
+			{sql:'SELECT rowid,* FROM category WHERE rowid=?',args:[cat]},
+			{sql:'UPDATE task SET name=?,category=? WHERE rowid=?',args:[name,cat,this.id]}
+		],false);
+		ct=ct.rows[0];
+		this.category=new TaskCategory(ct.rowid,ct.name,ct.color);
+	}
 }
-
+class TaskCategory {
+	constructor(id,name,color,update){
+		this.id=id;
+		this.name=name;
+		this.color=color;
+		this._update=update;
+	}
+	setUpdate(update){
+		this._update=update;
+	}
+	async update(name,color){
+		this.name=name;
+		this.color=color;
+		await this._update(name,color);
+	}
+}
 class Category {
-	constructor(id,name,color){
+	constructor(id,name,color,tasks){
 		this.id=id;
 		this.name=name;
 		this.color=color; // a string, name of the color
+		this.tasks=tasks;
+		for(let task of this.tasks){
+			task.category.setUpdate(this.update);
+		}
+	}
+	getShort(){
+		return new TaskCategory(this.id,this.name,this.color,this.update);
+	}
+	async update(name,color){
+		this.name=name;
+		this.color=color;
+		const db=sqlite.openDatabase('quickPlanner');
+		await db.execAsync([
+			{sql:'UPDATE category SET name=?,color=? WHERE rowid=?',args:[this.name,this.color,this.id]}
+		],false);
+		db.closeAsync();
+	}
+	async del(){
+		const db=sqlite.openDatabase('quickPlanner');
+		const tids=this.tasks.map(t=>t.id);
+		await db.execAsync([
+			{sql:'DELETE FROM task WHERE category=?',args:[this.id]},
+			{sql:'DELETE FROM planned WHERE task IN ('+tids.map(i=>'?').join()+')',args:[...tids]},
+			{sql:'DELETE FROM category WHERE rowid=?',args:[this.id]}
+		],false);
+		db.closeAsync();
 	}
 }
 
@@ -128,7 +205,7 @@ class Plan {
 	}
 	async setGratitudes(gratitudes){
 		this.gratitudes=gratitudes;
-		db=sqlite.openDatabase('quickPlanner');
+		const db=sqlite.openDatabase('quickPlanner');
 		await db.execAsync([
 			{sql:'UPDATE plan SET gratitudes=? WHERE rowid=?',args:[this.storeGratitudes(),this.id]}
 		],false);
@@ -182,10 +259,87 @@ export async function getPlan(id){
 	],true);
 	plan=plan.rows[0];
 	let [planned] = await db.execAsync([
-		{sql:'SELECT task,rank FROM planned WHERE plan=?',args:[id]}
+		{sql:'SELECT task,rank FROM planned WHERE plan=? ORDER BY rank',args:[id]}
 	],true);
 	planned = planned.rows;
 
-	return new Plan(id,plan.day,plan.gratitudes,planned.map(row=>Planned(row.task,row.order)));
+	return new Plan(id,plan.day,plan.gratitudes,planned.map(row=>new Planned(row.task,row.rank)));
 }
 
+export async function addCategory(label,color){
+	const db=sqlite.openDatabase('quickPlanner');
+	await db.execAsync([
+		{sql:'INSERT INTO category(name,color) VALUES(?,?)',args:[label,color]}
+	],false);
+	db.closeAsync();
+}
+export async function getCategories(){
+	const db=sqlite.openDatabase('quickPlanner');
+	let [categories]=await db.execAsync([
+		{sql:'SELECT rowid,name FROM category ORDER BY name ASC',args:[]}
+	],true);
+	res={};
+	categories.rows.forEach(item => {
+		res[item.rowid]=item.name;
+	});
+	db.closeAsync();
+	return res;
+}
+export async function getCategoriesFull(){
+	const db=sqlite.openDatabase('quickPlanner');
+	let [categories]=await db.execAsync([
+		{sql:'SELECT rowid,* FROM category ORDER BY name ASC',args:[]}
+	],true);
+	let cats=[];
+	let category;
+	let tasks;
+	for(const cat of categories.rows){
+		category=new TaskCategory(cat.rowid,cat.name,cat.color);
+		[tasks]= await db.execAsync([
+			{sql:'SELECT rowid,* FROM task WHERE category=? ORDER BY name ASC',args:[cat.rowid]}
+		],true);
+		tasks=tasks.rows.map(task=>new Task(task.rowid,task.name,task.done,category));
+		cats=cats.concat(new Category(category.id,category.name,category.color,tasks));
+	}
+	db.closeAsync();
+	return cats;
+}
+
+export async function addTask(label,category){
+	const db=sqlite.openDatabase('quickPlanner');
+	await db.execAsync([
+		{sql:'INSERT INTO task(name,category) VALUES(?,?)',args:[label,Number(category)]}
+	],false);
+	db.closeAsync();
+}
+
+export async function addPlanned(plan,task,rank){
+	const db=sqlite.openDatabase('quickPlanner');
+	await db.execAsync([
+		{sql:'INSERT INTO planned(task,plan,rank) VALUES(?,?,?)',args:[task,plan,rank]}
+	],false);
+	let [planned] = await db.execAsync([
+		{sql:'SELECT task,rank FROM planned WHERE plan=? ORDER BY rank',args:[plan]}
+	],true);
+	planned=planned.rows;
+	db.closeAsync();
+	return planned.map(row=>new Planned(row.task,row.rank));
+}
+
+export async function getPlanned(plan){
+	const db=sqlite.openDatabase('quickPlanner');
+	let [planned] = await db.execAsync([
+		{sql:'SELECT task,rank FROM planned WHERE plan=? ORDER BY rank',args:[plan]}
+	],true);
+	planned=planned.rows;
+	db.closeAsync();
+	return planned.map(row=>new Planned(row.task,row.rank));
+}
+
+export async function delPlanned(plan,task){
+	const db=sqlite.openDatabase('quickPlanner');
+	await db.execAsync([
+		{sql:'DELETE FROM planned WHERE plan=? AND task=?',args:[plan,task]}
+	],false);
+	db.closeAsync();
+}
