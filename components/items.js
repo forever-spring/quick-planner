@@ -11,7 +11,7 @@ import { categoryColors } from "../assets/utils/colors";
 import { deleteWarn } from "../assets/utils/translations";
 
 
-export function PlannedItem({planned,refresh}){
+export function PlannedItem({edit,planned,refresh}){
 	const theme = useContext(settingsContext).DarkTheme ? 'dark' : 'light';
 	
 	const [done, setDone] = useState(false);
@@ -37,15 +37,28 @@ export function PlannedItem({planned,refresh}){
 		refresh(planned.task.id);
 	};
 
+	const voidCallBack = ()=>{};
+
 	if(!task){} else {
-		return(
-			<View style={styles.row}>
-				<TapButton icon={done?'checkboxChecked':'checkbox'} action={flipDone} />
-				<Pressable onLongPress={remove}>
-					<Text style={{...textStyle.body,...textColor[theme],...styles.label}}>{name}</Text>
-				</Pressable>
-			</View>
-		);
+		if(edit){
+			return(
+				<View style={styles.row}>
+					<TapButton icon={done?'checkboxChecked':'checkbox'} action={flipDone} />
+					<Pressable onLongPress={remove}>
+						<Text style={{...textStyle.body,...textColor[theme],...styles.label}}>{name}</Text>
+					</Pressable>
+				</View>
+			);
+		} else {
+			return(
+				<View style={styles.row}>
+					<TapButton icon={done?'checkboxChecked':'checkbox'} action={voidCallBack} />
+					<Pressable onLongPress={voidCallBack}>
+						<Text style={{...textStyle.body,...textColor[theme],...styles.label}}>{name}</Text>
+					</Pressable>
+				</View>
+			);
+		}
 	}
 }
 
@@ -177,7 +190,7 @@ export function CategoryItem({category,full,picked,refresh}){
 	}
 }
 
-function TapButton({icon,action}){
+export function TapButton({icon,action}){
 	const theme = useContext(settingsContext).DarkTheme ? 'dark' : 'light';
 
 	return (
@@ -196,6 +209,7 @@ const iconSource = {
 	delete: require('../assets/icons/delete.png'),
 	checkbox: require('../assets/icons/checkbox.png'),
 	checkboxChecked: require('../assets/icons/checkbox-checked.png'),
+	view: require('../assets/icons/view.png'),
 };
 
 const styles = StyleSheet.create({

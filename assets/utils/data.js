@@ -343,3 +343,22 @@ export async function delPlanned(plan,task){
 	],false);
 	db.closeAsync();
 }
+
+export async function getArchived(active){
+	const db=sqlite.openDatabase('quickPlanner');
+	let [plans] = await db.execAsync([
+		{sql:'SELECT rowid,day FROM plan WHERE NOT rowid=?',args:[active]}
+	],true);
+	plans=plans.rows;
+	db.closeAsync();
+	return plans.map(row=>new Archived(row.rowid,new Day(row.rowid,row.day)));
+}
+
+export async function delPlan(id){
+	const db=sqlite.openDatabase('quickPlanner');
+	await db.execAsync([
+		{sql:'DELETE FROM planned WHERE plan=?',args:[id]},
+		{sql:'DELETE FROM plan WHERE rowid=?',args:[id]}
+	],false);
+	db.closeAsync();
+}

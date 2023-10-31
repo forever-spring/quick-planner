@@ -36,7 +36,7 @@ export default function Plan(props){
 	useEffect(()=>{
 		const getActive = async() => {
 			try{
-				value=await AsyncStorage.getItem('activeDay');
+				const value=await AsyncStorage.getItem('activeDay');
 				if(!Number(value)){
 					setPlan(await addPlan());
 					AsyncStorage.setItem('activeDay',String(plan.id));
@@ -120,7 +120,7 @@ function PlannedComponent({tasks,planId}){
 				</View></View>
 			</Modal>
 			<Text style={{...textStyle.label,...textColor[theme]}}>{planPage.planned.label[lang]}</Text>
-			<View style={styles.plannedList}>{planned.map(task=><PlannedItem planned={task} refresh={refresh} />)}</View>
+			<View style={styles.plannedList}>{planned.map(task=><PlannedItem edit={true} planned={task} refresh={refresh} />)}</View>
 			<TextIconButton icon='plan' label={planPage.planned.button[lang]} action={openModal} />
 		</View>
 	);

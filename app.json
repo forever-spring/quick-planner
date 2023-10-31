@@ -27,6 +27,9 @@
     "web": {
       "favicon": "./assets/expo/favicon.png"
     },
+	"extra": {
+		"supportsRTL": true
+	},
     "plugins": [
       "expo-localization"
     ]

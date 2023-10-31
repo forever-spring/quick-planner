@@ -120,4 +120,5 @@ const iconSource = {
 	archive: require('../assets/icons/archive-button.png'),
 	add: require('../assets/icons/add.png'),
 	close: require('../assets/icons/close.png'),
+	back: require('../assets/icons/back.png'),
 }
