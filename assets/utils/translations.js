@@ -286,3 +286,14 @@ export const runTutorial = {
 	fa: 'نمایش نحوه‌ی کار با اپلیکیشن',
 };
 
+export const tutorialButton = {
+	en: [
+		'Skip',
+		'Done'
+	],
+	fa: [
+		'رد کردن',
+		'پایان'
+	],
+};
+
