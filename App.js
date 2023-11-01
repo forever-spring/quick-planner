@@ -4,6 +4,7 @@ import {
 	BalooBhaijaan2_400Regular,
 	BalooBhaijaan2_500Medium,
 } from '@expo-google-fonts/baloo-bhaijaan-2';
+import {preventAutoHideAsync, hideAsync} from 'expo-splash-screen';
 import { Appearance } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
@@ -22,6 +23,7 @@ import { initDB } from "./assets/utils/data";
 
 
 const NavStack=createNativeStackNavigator();
+preventAutoHideAsync();
 
 export default function App() {
 	const lang = getLocales()[0].languageCode;
@@ -100,14 +102,16 @@ export default function App() {
 	},[]);
 	
 	if(!fontsLoaded || !settingsLoaded || !db) {
-		return null; // replace with loading page
+		return null;
 	} else if(!init) {
+		hideAsync();
 		return (
 			<Hooks.settingsContext.Provider value={appSettings}>
 				<Welcome signal={setInit} />
 			</Hooks.settingsContext.Provider>
 		);
 	} else {
+		hideAsync();
 		return (
 			<NavigationContainer><Hooks.settingsContext.Provider value={appSettings}>
 				<NavStack.Navigator initialRouteName='plan'>
