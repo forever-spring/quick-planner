@@ -15,6 +15,7 @@ import { themeColors } from '../assets/utils/colors';
 export default function Welcome({signal}){
 	const theme = useContext(settingsContext).DarkTheme ? 'dark' : 'light';
 	const lang = useContext(settingsContext).AppLanguage;
+	const dir = lang in ['fa']? 'rtl':'ltr';
 
 	const [tour, setTour] = useState(false);
 	const [goal, setGoal] = useState('');
@@ -32,7 +33,7 @@ export default function Welcome({signal}){
 
 	if(!tour){
 		return(
-			<View style={containers[theme]}>
+			<View style={{...containers[theme],...containers[dir]}}>
 				<View style={containers.scroll}><ScrollView>
 					<Text style={{...textStyle.huge,...textColor[theme],...styles.welcome}}>{welcomePage.welcome[lang]}
 						<Text style={textColor.primary}>Quick Planner</Text>

@@ -16,6 +16,7 @@ import { getArchived, getPlan, delPlan } from "../assets/utils/data";
 export default function Archive(props){
 	const theme = useContext(settingsContext).DarkTheme ? 'dark' : 'light';
 	const lang = useContext(settingsContext).AppLanguage;
+	const dir = lang in ['fa']?'rtl':'ltr';
 	const mode = useContext(settingsContext).DateStyle;
 	const swipe = Gesture.Fling().direction(Directions.RIGHT).onStart(()=>{
 		props.navigation.navigate('plan');
@@ -51,7 +52,7 @@ export default function Archive(props){
 	
 	if(listView){
 		return(
-			<View style={containers[theme]}>
+			<View style={{...containers[theme],...containers[dir]}}>
 				<Header page='archive' navigation={props.navigation} navBar={true} />
 				<GestureHandlerRootView style={containers.scroll}><GestureDetector gesture={swipe}><ScrollView>
 					{archives.map(item=>
@@ -68,7 +69,7 @@ export default function Archive(props){
 		);
 	} else {
 		return(
-			<View style={containers[theme]}>
+			<View style={{...containers[theme],...containers[dir]}}>
 				<Header page='archive' navigation={props.navigation} navBar={true} />
 				<GestureHandlerRootView style={containers.scroll}><GestureDetector gesture={swipe}><ScrollView>
 					<Text style={{...textStyle.label,...textColor[theme],textAlign:'center',margin: 16*PixelRatio.get()}}>

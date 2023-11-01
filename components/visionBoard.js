@@ -13,6 +13,7 @@ import { visionBoard } from '../assets/utils/translations';
 export default function VisionBoard(){
 	const theme = useContext(settingsContext).DarkTheme ? 'dark' : 'light';
 	const lang = useContext(settingsContext).AppLanguage;
+	const dir = lang in ['fa']?'rtl':'ltr';
 
 	const [goal, setGoal] = useState('');
 	const [why, setWhy] = useState('');
@@ -69,13 +70,13 @@ export default function VisionBoard(){
 				<TextButton label={visionBoard.button[lang]} action={saveWhy} style={modals.button} />
 			</View></Modal>
 			<View style={styles.item}>
-				<Image style={{...icons.hugeIcon,...imageColor.accent}} source={require('../assets/icons/goal.png')} />
+				<Image style={{...icons.hugeIcon,...imageColor.accent,...icons[dir]}} source={require('../assets/icons/goal.png')} />
 				<Pressable style={styles.text} onLongPress={toggleGoalModal}>
 					<Text style={{...textStyle.label,...textColorPrimary[theme]}}>{goal}</Text>
 				</Pressable>
 			</View>
 			<View style={styles.item}>
-				<Image style={{...icons.hugeIcon,...imageColor.accent}} source={require('../assets/icons/why.png')} />
+				<Image style={{...icons.hugeIcon,...imageColor.accent,...icons[dir]}} source={require('../assets/icons/why.png')} />
 				<Pressable style={styles.text} onLongPress={toggleWhyModal}>
 					<Text style={{...textStyle.label,...textColorPrimary[theme]}}>{why}</Text>
 				</Pressable>

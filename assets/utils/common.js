@@ -17,6 +17,12 @@ export const icons = StyleSheet.create({
 	hugeIcon: {
 		width: 30*PixelRatio.get(),
 		height: 30*PixelRatio.get(),
+	},
+	rtl: {
+		transform: [{scaleX: -1}],
+	},
+	ltr: {
+		transform: [{scaleX: 1}],
 	}
 });
 
@@ -139,6 +145,12 @@ export const containers = StyleSheet.create({
 		justifyContent: 'flex-start',
 		alignItems: 'stretch',
 		paddingTop: 16*PixelRatio.get(),
+	},
+	rtl: {
+		direction: 'rtl',
+	},
+	ltr:{
+		direction: 'ltr',
 	},
 });
 

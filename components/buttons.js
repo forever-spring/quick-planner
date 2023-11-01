@@ -30,6 +30,7 @@ export function TextButton({label,action,style,layout}){
 
 export function TextIconButton({icon,label,action,style}){
 	const theme = useContext(settingsContext).DarkTheme ? 'dark' : 'light';
+	const dir = useContext(settingsContext).AppLanguage in ['fa']?'rtl':'ltr';
 
 	if(style==undefined){
 		style={};
@@ -37,7 +38,7 @@ export function TextIconButton({icon,label,action,style}){
 
 	return (
 		<Pressable onPress={action} style={{...styles.button,...shadow[theme],...style,...styles.combo}}>
-			<Image source={iconSource[icon]} style={{...icons.smallIcon,...imageColorInvert[theme]}} />
+			<Image source={iconSource[icon]} style={{...icons.smallIcon,...imageColorInvert[theme],...icons[dir]}} />
 			<Text style={{...textStyle.label,...textColorInvert[theme]}}>{label}</Text>
 		</Pressable>
 	);
@@ -45,10 +46,11 @@ export function TextIconButton({icon,label,action,style}){
 
 export function IconButton ({icon,action}){
 	const theme = useContext(settingsContext).DarkTheme ? 'dark' : 'light';
+	const dir = useContext(settingsContext).AppLanguage in ['fa']?'rtl':'ltr';
 
 	return (
 		<Pressable onPress={action} style={{...styles.button,...shadow[theme],...styles.iconButton}}>
-			<Image source={iconSource[icon]} style={{...icons.mediIcon,...imageColorInvert[theme]}} />
+			<Image source={iconSource[icon]} style={{...icons.mediIcon,...imageColorInvert[theme],...icons[dir]}} />
 		</Pressable>
 	);
 }

@@ -21,6 +21,7 @@ import { addPlan, getPlan, getCategoriesFull, addPlanned, getPlanned, delPlanned
 export default function Plan(props){
 	const theme = useContext(settingsContext).DarkTheme ? 'dark' : 'light';
 	const lang = useContext(settingsContext).AppLanguage;
+	const dir = lang in ['fa']?'rtl':'ltr';
 
 	const swipeR = Gesture.Fling().direction(Directions.RIGHT).onStart(()=>{
 		props.navigation.navigate('list');
@@ -64,7 +65,7 @@ export default function Plan(props){
 	
 	if(!Object.keys(plan).length){
 		return(
-			<View style={containers[theme]}>
+			<View style={{...containers[theme],...containers[dir]}}>
 				<Header page='plan' navigation={props.navigation} navBar={true} />
 				<GestureHandlerRootView style={containers.scroll}><GestureDetector gesture={swipes}><ScrollView>
 					<VisionBoard />
@@ -73,7 +74,7 @@ export default function Plan(props){
 		);
 	} else {
 		return(
-			<View style={containers[theme]}>
+			<View style={{...containers[theme],...containers[dir]}}>
 				<Header page='plan' navigation={props.navigation} navBar={true} />
 				<GestureHandlerRootView style={containers.scroll}><GestureDetector gesture={swipes}><ScrollView>
 					<VisionBoard />

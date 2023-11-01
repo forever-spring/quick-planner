@@ -192,10 +192,11 @@ export function CategoryItem({category,full,picked,refresh}){
 
 export function TapButton({icon,action}){
 	const theme = useContext(settingsContext).DarkTheme ? 'dark' : 'light';
+	const dir = useContext(settingsContext).AppLanguage in ['fa']?'rtl':'ltr';
 
 	return (
 		<Pressable onPress={action} style={styles.button}>
-			<Image source={iconSource[icon]} style={{...icons.smallIcon,...imageColor[theme]}} />
+			<Image source={iconSource[icon]} style={{...icons.smallIcon,...imageColor[theme],...icons[dir]}} />
 		</Pressable>
 	);
 }
@@ -210,6 +211,7 @@ const iconSource = {
 	checkbox: require('../assets/icons/checkbox.png'),
 	checkboxChecked: require('../assets/icons/checkbox-checked.png'),
 	view: require('../assets/icons/view.png'),
+	copy: require('../assets/icons/copy.png'),
 };
 
 const styles = StyleSheet.create({

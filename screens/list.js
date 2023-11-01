@@ -17,6 +17,7 @@ import { getCategoriesFull } from "../assets/utils/data";
 export default function List(props){
 	const theme = useContext(settingsContext).DarkTheme ? 'dark' : 'light';
 	const lang = useContext(settingsContext).AppLanguage;
+	const dir = lang in ['fa']?'rtl':'ltr';
 	const swipe = Gesture.Fling().direction(Directions.LEFT).onStart(()=>{
 		props.navigation.navigate('plan');
 	});
@@ -37,7 +38,7 @@ export default function List(props){
 	};
 	
 	return(
-		<View style={containers[theme]}>
+		<View style={{...containers[theme],...containers[dir]}}>
 			<Header page='list' navigation={props.navigation} navBar={true} />
 			<GestureHandlerRootView style={containers.scroll}><GestureDetector gesture={swipe}><ScrollView>
 				{categories.map(cat=><CategoryItem category={cat} full={true} refresh={refresh} />)}

@@ -10,10 +10,11 @@ import { settings } from "../assets/utils/translations";
 export default function Settings(props){
 	const context = useContext(settingsContext);
 	const lang = context.AppLanguage;
+	const dir = lang in ['fa']?'rtl':'ltr';
 	const theme = context.DarkTheme? 'dark':'light';
 	
 	return(
-		<View style={containers[theme]}>
+		<View style={{...containers[theme],...containers[dir]}}>
 			<Header page='settings' navigation={props.navigation} navBar={false} />
 			<View style={containers.scroll}><ScrollView>
 				<SettingItemSwitch title={settings.DarkTheme.title[lang]} value={theme=='dark'} dispatch={props.dispatchers.DarkTheme} />
