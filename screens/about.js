@@ -19,7 +19,7 @@ export default function About(props){
 		clipboard.setStringAsync('foreverspring37@gmail.com');
 	};
 	const copyWallet = ()=>{
-		clipboard.setStringAsync('');
+		clipboard.setStringAsync('bc1qqluh6n498fpef9wymaarqtkel9f4pln07wv0zc');
 	};
 
 	return(
@@ -47,10 +47,12 @@ export default function About(props){
 				</View>
 				<View style={styles.wrap}>
 					<Text style={{...textStyle.body,...textColor[theme]}}>
-						I am an independant developer. You can support me by donating to my crypto wallet. My wallet address is:
+						I am an independant developer. You can support me by donating to my bitcoin wallet. My wallet address is:
 					</Text>
 					<View style={styles.row}>
-						<Text style={{...textStyle.label,...textColorPrimary[theme]}}>here...</Text>
+						<Text style={{...textStyle.label,...textColorPrimary[theme]}}>
+							bc1qqluh6n498fpef9wymaarqtkel9f4pln07wv0zc
+						</Text>
 						<TapButton icon='copy' action={copyWallet} />
 					</View>
 				</View>
