@@ -13,13 +13,17 @@ export default function Tour({endAction}){
 	const dir = lang in ['fa']?'rtl':'ltr';
 
 	return (
-		<View style={{...containers[theme],...containers[dir]}}>
-			<TextButton label='Start App' action={endAction} style={styles.button} />
+		<View style={{...containers[theme],...containers[dir],...styles.wrap}}>
+			<TextButton label='Done' action={endAction} style={styles.button} />
 		</View>
 	);
 }
 
 const styles = StyleSheet.create({
+	wrap:{
+		width: '100%',
+		height: '100%',
+	},
 	button: {
 		alignSelf: 'center',
 		alignContent: 'center',

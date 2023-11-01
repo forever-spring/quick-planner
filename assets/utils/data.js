@@ -17,9 +17,9 @@ class Day {
 	display(mode,lang){
 		switch(mode){
 			case 1:
-				return String(this.date)+'.'+String(this.month)+'.'+String(this.year)+' - '+weekDays[lang][this.day];
+				return String(this.date)+'    '+String(this.month)+'    '+String(this.year)+'    -    '+weekDays[lang][this.day];
 			case 2:
-				return String(this.month)+'.'+String(this.date)+'.'+String(this.year)+' - '+weekDays[lang][this.day];
+				return String(this.month)+'    '+String(this.date)+'    '+String(this.year)+'    -    '+weekDays[lang][this.day];
 			default:
 				raise('Wrong mode passed to Day.display(mode,lang)');
 		}

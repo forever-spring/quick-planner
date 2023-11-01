@@ -13,10 +13,12 @@ export function WarningModalOne({text,end}){
 	const theme = useContext(settingsContext).DarkTheme ? 'dark' : 'light';
 	const lang = useContext(settingsContext).AppLanguage;
 
-	<View style={modalBasic[theme]}><View style={{...modalBasic.box,...shadow[theme],...styles[theme]}}>
-		<Text style={{...textStyle.body,...textColor.primary}}>{text}</Text>
-		<TextButton label={warnButton.one[lang]} action={end}/>
-	</View></View>
+	return(
+		<View style={modalBasic[theme]}><View style={{...modalBasic.box,...shadow[theme],...styles[theme]}}>
+			<Text style={{...textStyle.body,...textColor.primary}}>{text}</Text>
+			<TextButton label={warnButton.one[lang]} action={end}/>
+		</View></View>
+	);
 }
 
 export function WarningModalTwo({text,back,ok}){

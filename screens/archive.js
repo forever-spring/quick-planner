@@ -98,7 +98,8 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'flex-start',
 		alignItems: 'center',
-		padding: 4*PixelRatio.get(),
+		marginHorizontal: 16*PixelRatio.get(),
+		marginVertical: 8*PixelRatio.get(),
 	},
 	label: {
 		flex: 1,

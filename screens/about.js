@@ -1,5 +1,5 @@
 import * as clipboard from 'expo-clipboard';
-import { Text, View, ScrollView, Image, StyleSheet, PixelRatio } from "react-native";
+import { Text, View, ScrollView, Image, StyleSheet, PixelRatio, Modal } from "react-native";
 import { useContext, useState } from "react";
 
 import Header from "../components/topBars";
@@ -96,11 +96,14 @@ const styles = StyleSheet.create({
 	},
 	button: {
 		alignSelf: 'center',
+		marginBottom: 32*PixelRatio.get()
 	},
 	light: {
 		backgroundColor: themeColors.light,
+		flex: 1,
 	},
 	dark: {
 		backgroundColor: themeColors.dark,
+		flex: 1,
 	},
 });
