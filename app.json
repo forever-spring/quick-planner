@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "QuickPlanner",
-    "slug": "Quick Planner",
+    "name": "Quick Planner",
+    "slug": "quick-planner",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/graphics/icon.png",
@@ -15,7 +15,10 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "ExpoLocalization_supportsRTL": true
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -27,11 +30,15 @@
     "web": {
       "favicon": "./assets/graphics/favicon.png"
     },
-	"extra": {
-		"supportsRTL": true
-	},
+    "extra": {
+      "supportsRTL": true,
+      "eas": {
+        "projectId": "ec392ba8-0216-444b-bd95-0debcc67573f"
+      }
+    },
     "plugins": [
       "expo-localization"
-    ]
+    ],
+    "owner": "foreverspring"
   }
 }
