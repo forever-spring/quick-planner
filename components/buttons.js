@@ -123,4 +123,5 @@ const iconSource = {
 	add: require('../assets/icons/add.png'),
 	close: require('../assets/icons/close.png'),
 	back: require('../assets/icons/back.png'),
+	play: require('../assets/icons/play.png'),
 }

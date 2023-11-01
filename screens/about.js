@@ -1,16 +1,21 @@
 import * as clipboard from 'expo-clipboard';
 import { Text, View, ScrollView, Image, StyleSheet, PixelRatio } from "react-native";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
 import Header from "../components/topBars";
 import { TapButton } from '../components/items';
+import { TextIconButton } from '../components/buttons';
+import Tour from '../components/tour';
 
-import { containers, textColor, textStyle, textColorPrimary } from "../assets/utils/common";
+import { containers, textColor, textStyle, textColorPrimary, modalBasic, shadow } from "../assets/utils/common";
 import { settingsContext } from "../assets/utils/settings";
+import { runTutorial } from '../assets/utils/translations';
+import { themeColors } from '../assets/utils/colors';
 
 export default function About(props){
 	const theme = useContext(settingsContext).DarkTheme ? 'dark' : 'light';
-	const dir = useContext(settingsContext).AppLanguage in ['fa']?'rtl':'ltr';
+	const lang = useContext(settingsContext).AppLanguage;
+	const dir = lang in ['fa']?'rtl':'ltr';
 
 	const copyWeb = ()=>{
 		clipboard.setStringAsync('https://foreverspring.ir');
@@ -21,6 +26,7 @@ export default function About(props){
 	const copyWallet = ()=>{
 		clipboard.setStringAsync('bc1qqluh6n498fpef9wymaarqtkel9f4pln07wv0zc');
 	};
+	const [tour,setTour] = useState(false);
 
 	return(
 		<View style={{...containers[theme],...containers[dir]}}>
@@ -31,6 +37,8 @@ export default function About(props){
 						<Text style={{...textColor.primary,...textStyle.title}}>Quick Planner</Text> is an android app by</Text>
 						<Image source={require('../assets/graphics/fs.png')} style={styles.fs}/>
 						<Text style={{...textStyle.body,...textColor[theme]}}>written with React Native.</Text>
+				</View>
+				<View style={styles.wrap}>
 					<View  style={styles.row}>
 						<Text style={{...textColorPrimary[theme],...textStyle.label}}> https://foreverspring.ir</Text>
 						<TapButton icon='copy' action={copyWeb} />
@@ -56,7 +64,13 @@ export default function About(props){
 						<TapButton icon='copy' action={copyWallet} />
 					</View>
 				</View>
+				<TextIconButton icon='play' label={runTutorial[lang]} action={()=>setTour(true)} style={styles.button} />
 			</ScrollView></View>
+			<Modal transparent={true} onRequestClose={()=>setTour(false)} animationType="fade" visible={tour}>
+				<View style={modalBasic[theme]}><View style={{...modalBasic.box,...shadow[theme],...styles[theme]}}>
+					<Tour endAction={()=>setTour(false)} />
+				</View></View>
+			</Modal>
 		</View>
 	);
 }
@@ -79,5 +93,14 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 		alignItems: 'center',
 		margin: 8*PixelRatio.get(),
-	}
+	},
+	button: {
+		alignSelf: 'center',
+	},
+	light: {
+		backgroundColor: themeColors.light,
+	},
+	dark: {
+		backgroundColor: themeColors.dark,
+	},
 });

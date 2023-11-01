@@ -281,3 +281,8 @@ export const deleteWarn = {
 	},
 };
 
+export const runTutorial = {
+	en: 'Run The Tutorial',
+	fa: 'نمایش نحوه‌ی کار با اپلیکیشن',
+};
+
