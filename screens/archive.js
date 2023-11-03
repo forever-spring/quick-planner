@@ -1,3 +1,4 @@
+import { StatusBar } from 'react-native';
 import { Text, View, ScrollView, PixelRatio, StyleSheet, Modal } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { GestureHandlerRootView,GestureDetector, Gesture, Directions } from "react-native-gesture-handler";
@@ -53,6 +54,7 @@ export default function Archive(props){
 	if(listView){
 		return(
 			<View style={{...containers[theme],...containers[dir]}}>
+				<StatusBar style={theme} />
 				<Header page='archive' navigation={props.navigation} navBar={true} />
 				<GestureHandlerRootView style={containers.scroll}><GestureDetector gesture={swipe}><ScrollView>
 					{archives.map(item=>
@@ -70,6 +72,7 @@ export default function Archive(props){
 	} else {
 		return(
 			<View style={{...containers[theme],...containers[dir]}}>
+				<StatusBar style={theme} />
 				<Header page='archive' navigation={props.navigation} navBar={true} />
 				<GestureHandlerRootView style={containers.scroll}><GestureDetector gesture={swipe}><ScrollView>
 					<Text style={{...textStyle.label,...textColor[theme],textAlign:'center',margin: 16*PixelRatio.get()}}>

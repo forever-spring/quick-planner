@@ -1,4 +1,5 @@
 import * as clipboard from 'expo-clipboard';
+import { StatusBar } from 'react-native';
 import { Text, View, ScrollView, Image, StyleSheet, PixelRatio, Modal } from "react-native";
 import { useContext, useState } from "react";
 
@@ -30,6 +31,7 @@ export default function About(props){
 
 	return(
 		<View style={{...containers[theme],...containers[dir]}}>
+			<StatusBar style={theme} />
 			<Header page='about' navigation={props.navigation} navBar={false} />
 			<View style={containers.scroll}><ScrollView>
 				<View style={styles.wrap}>

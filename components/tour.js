@@ -26,7 +26,7 @@ export default function Tour({endAction}){
 	}
 
 	return (
-		<View style={{...containers[theme],...containers[dir],...styles.wrap}}>
+		<View style={{...styles.wrap}}>
 			<Image source={shots[lang][current]} style={{...styles.img}} />
 			<View style={styles.row}>
 				{current===0?<IconButton icon='blank' action={()=>{}} />:<IconButton icon='prev' action={()=>setCurrent(current-1)} />}

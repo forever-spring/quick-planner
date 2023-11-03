@@ -1,3 +1,4 @@
+import { StatusBar } from 'react-native';
 import { Text, View, ScrollView, TextInput, Pressable, Image, StyleSheet, PixelRatio, Modal } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { GestureHandlerRootView,GestureDetector, Gesture, Directions } from "react-native-gesture-handler";
@@ -66,6 +67,7 @@ export default function Plan(props){
 	if(!Object.keys(plan).length){
 		return(
 			<View style={{...containers[theme],...containers[dir]}}>
+				<StatusBar style={theme} />
 				<Header page='plan' navigation={props.navigation} navBar={true} />
 				<GestureHandlerRootView style={containers.scroll}><GestureDetector gesture={swipes}><ScrollView>
 					<VisionBoard />
@@ -75,6 +77,7 @@ export default function Plan(props){
 	} else {
 		return(
 			<View style={{...containers[theme],...containers[dir]}}>
+				<StatusBar style={theme} />
 				<Header page='plan' navigation={props.navigation} navBar={true} />
 				<GestureHandlerRootView style={containers.scroll}><GestureDetector gesture={swipes}><ScrollView>
 					<VisionBoard />
@@ -241,7 +244,7 @@ function DropDown({day,options}){
 	
 	const openMenu = ()=>{
 		elemRef.current.measure((x,y,width,height,pageX,pageY)=>{
-			setPose(StyleSheet.create({left:pageX,top:pageY-16*PixelRatio.get()}));
+			setPose(StyleSheet.create({left:pageX,top:pageY}));
 		});
 		setOpen(true);
 	};

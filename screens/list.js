@@ -1,3 +1,4 @@
+import { StatusBar } from 'react-native';
 import { View, ScrollView, Modal } from "react-native";
 import { GestureHandlerRootView,GestureDetector, Gesture, Directions } from "react-native-gesture-handler";
 import { useContext, useEffect, useState } from "react";
@@ -39,6 +40,7 @@ export default function List(props){
 	
 	return(
 		<View style={{...containers[theme],...containers[dir]}}>
+			<StatusBar style={theme} />
 			<Header page='list' navigation={props.navigation} navBar={true} />
 			<GestureHandlerRootView style={containers.scroll}><GestureDetector gesture={swipe}><ScrollView>
 				{categories.map(cat=><CategoryItem category={cat} full={true} refresh={refresh} />)}

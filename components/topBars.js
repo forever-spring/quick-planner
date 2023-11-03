@@ -39,18 +39,28 @@ export default function Header({page, navigation, navBar}){
 function TitleBar({page,navigation,onLayout}){
 	const [navOpen,setNavOpen] = useState(false);
 	const theme = useContext(settingsContext).DarkTheme ? 'dark' : 'light';
+	
+	const toAbout = ()=>{
+		setNavOpen(false);
+		navigation.navigate('about');
+	};
+	const toSettings = ()=>{
+		setNavOpen(false);
+		navigation.navigate('settings');
+	};
+
 	return(
 		<View style={styles.titleBar} onLayout={(obj)=>onLayout(1,obj['nativeEvent']['layout']['height'])}>
 			<Text style={{...textStyle.title,...textColor[theme]}}>{pageTitles[page][useContext(settingsContext).AppLanguage]}</Text>
 			{navOpen ? (
 				<View style={styles.navOpenView}>
-					<Pressable style={icons.smallIcon} onPress={() => navigation.navigate('about')}>
+					<Pressable style={icons.smallIcon} onPress={toAbout}>
 						<Image 
 							style={{...icons.smallIcon,...imageColor[theme]}} 
 							source={page=='about'?require('../assets/icons/info-filled.png'):require('../assets/icons/info.png')} 
 						/>
 					</Pressable>
-					<Pressable style={icons.smallIcon} onPress={() => navigation.navigate('settings')}>
+					<Pressable style={icons.smallIcon} onPress={toSettings}>
 						<Image 
 							style={{...icons.smallIcon,...imageColor[theme]}} 
 							source={page=='settings'?require('../assets/icons/setting-filled.png'):require('../assets/icons/setting.png')} 

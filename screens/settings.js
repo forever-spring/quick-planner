@@ -1,3 +1,4 @@
+import { StatusBar } from 'react-native';
 import { ScrollView, Text, View, Pressable, Image, StyleSheet, PixelRatio } from "react-native";
 import { useContext, useState } from "react";
 
@@ -15,6 +16,7 @@ export default function Settings(props){
 	
 	return(
 		<View style={{...containers[theme],...containers[dir]}}>
+			<StatusBar style={theme} />
 			<Header page='settings' navigation={props.navigation} navBar={false} />
 			<View style={containers.scroll}><ScrollView>
 				<SettingItemSwitch title={settings.DarkTheme.title[lang]} value={theme=='dark'} dispatch={props.dispatchers.DarkTheme} />
