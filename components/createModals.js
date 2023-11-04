@@ -31,9 +31,10 @@ export function TaskModal({mode,onEnd,refresh,task}){
 
 	const [lbl,setLbl] = useState(mode?task.name:'');
 	const [cat,setCat] = useState(mode?task.category.id:0);
+	const [note,setNote] = useState(mode?task.note:'');
 	const createTask = async() =>{
 		if(cat!==0 && lbl!==''){
-			await addTask(lbl,cat);
+			await addTask(lbl,note,cat);
 			onEnd();
 			refresh();
 		} else if(cat!==0){
@@ -49,7 +50,7 @@ export function TaskModal({mode,onEnd,refresh,task}){
 	}
 	const updateTask = async() =>{
 		if(cat!==0&&lbl!==''){
-			await task.update(lbl,cat);
+			await task.update(lbl,note,cat);
 			onEnd();
 			refresh();
 		} else if(cat!==0){
@@ -76,9 +77,19 @@ export function TaskModal({mode,onEnd,refresh,task}){
 				onChangeText={setLbl} 
 				autoCapitalize="words" 
 			/>
+			<TextInput 
+				selectionColor={themeColors.accent.original} 
+				placeholder={createModals.newTask.note[lang]}
+				placeholderTextColor={themeColors.gray} 
+				style={{...textInput.roundCorner,...textInput[theme],...textStyle.body,...styles.note}}
+				value={note}
+				onChangeText={setNote} 
+				multiline={true} 
+				numberOfLines={5} 
+			/>
 			<DropDown defaultVal={createModals.newTask.cat[lang]} val={cat?cat:''} options={categories?categories:[]} action={setCat} />
 			<TextButton 
-				label={createModals.newTask.label[lang]} 
+				label={createModals.newTask.label[lang][mode]} 
 				action={mode?updateTask:createTask} 
 				style={styles.button} 
 			/>
@@ -149,7 +160,7 @@ export function CategoryModal({mode,onEnd,refresh,category}){
 				</View>
 			</View>
 			<TextButton 
-				label={createModals.newCat.label[lang]} 
+				label={createModals.newCat.label[lang][mode]} 
 				action={mode?updateCat:createCat} 
 				style={styles.button} 
 			/>
@@ -213,5 +224,10 @@ const styles = StyleSheet.create({
 	},
 	button: {
 		alignSelf: 'flex-end',
+	},
+	note: {
+		verticalAlign: 'top',
+		paddingHorizontal: 8*PixelRatio.get(),
+		paddingVertical: 8*PixelRatio.get(),
 	}
 });

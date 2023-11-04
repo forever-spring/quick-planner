@@ -19,7 +19,7 @@ import Archive from './screens/archive';
 import Welcome from "./screens/welcome";
 
 import * as Hooks from './assets/utils/settings.js';
-import { initDB } from "./assets/utils/data";
+import { initDB, update1DB } from "./assets/utils/data";
 
 
 const NavStack=createNativeStackNavigator();
@@ -89,9 +89,15 @@ export default function App() {
 
 	useEffect(()=>{
 		const initial = async() => {
-			value = await AsyncStorage.getItem('init');
+			const value = await AsyncStorage.getItem('init');
+			const up1 = await AsyncStorage.getItem('update1');
 			if(value==null){
 				await initDB();
+				await AsyncStorage.setItem('update1','done');
+				setDb(true);
+			} else if(up1==null){
+				await update1DB();
+				await AsyncStorage.setItem('update1','done');
 				setDb(true);
 			} else {
 				setInit(true);

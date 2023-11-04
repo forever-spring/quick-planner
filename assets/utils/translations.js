@@ -197,8 +197,14 @@ export const listPage = {
 export const createModals = {
 	newCat: {
 		label: {
-			en: 'Create New Category',
-			fa: 'ساخت دسته‌ی جدید',
+			en: [
+				'Create New Category',
+				'Update Category'
+			],
+			fa: [
+				'ساخت دسته‌ی جدید',
+				'به روز رسانی دسته'
+			],
 		},
 		fill: {
 			en: 'Category Title',
@@ -211,8 +217,14 @@ export const createModals = {
 	},
 	newTask: {
 		label: {
-			en: 'Create New Task',
-			fa: 'ساخت کار جدید',
+			en: [
+				'Create New Task',
+				'Update Task'
+			],
+			fa: [
+				'ساخت کار جدید',
+				'به روز رسانی کار'
+			],
 		},
 		fill: {
 			en: 'Task Title',
@@ -222,6 +234,10 @@ export const createModals = {
 			en: 'pick category',
 			fa: 'انتخاب دسته',
 		},
+		note: {
+			en: 'Notes',
+			fa: 'یادداشت',
+		}
 	},
 	button: {
 		en: [
@@ -295,5 +311,10 @@ export const tutorialButton = {
 		'رد کردن',
 		'پایان'
 	],
+};
+
+export const infoModal = {
+	en: 'Done',
+	fa: 'پایان',
 };
 

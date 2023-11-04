@@ -1,4 +1,5 @@
 import * as sqlite from 'expo-sqlite';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { weekDays } from "./translations";
 
@@ -93,17 +94,18 @@ class Planned {
 			{sql:'SELECT * FROM category WHERE rowid=?',args:[task.category]}
 		],true);
 		cat=cat.rows[0];
-		this.task=new Task(this.taskId,task.name,task.done, new TaskCategory(task.category,cat.name,cat.color));
+		this.task=new Task(this.taskId,task.name,task.done,task.note, new TaskCategory(task.category,cat.name,cat.color));
 		db.closeAsync();
 		return this.task;
 	}
 }
 
 class Task {
-	constructor(id,name,done,category){
+	constructor(id,name,done,note,category){
 		this.id=id;
 		this.name=name;
 		this.done=Boolean(done); // save with Number(done)
+		this.note=note;
 		this.category=category; // to be retrieved before construction
 	}
 	storeCategory(){
@@ -125,12 +127,12 @@ class Task {
 		],false);
 		db.closeAsync();
 	}
-	async update(name,cat){
+	async update(name,note,cat){
 		// cat is catId
 		const db=sqlite.openDatabase('quickPlanner');
 		let [ct]=await db.execAsync([
 			{sql:'SELECT rowid,* FROM category WHERE rowid=?',args:[cat]},
-			{sql:'UPDATE task SET name=?,category=? WHERE rowid=?',args:[name,cat,this.id]}
+			{sql:'UPDATE task SET name=?,note=?,category=? WHERE rowid=?',args:[name,note,cat,this.id]}
 		],false);
 		ct=ct.rows[0];
 		this.category=new TaskCategory(ct.rowid,ct.name,ct.color);
@@ -223,9 +225,19 @@ export async function initDB(){
 
 	await db.execAsync([
 		{sql:'CREATE TABLE category(name TEXT NOT NULL, color TEXT NOT NULL)',args:[]},
-		{sql:'CREATE TABLE task(name TEXT NOT NULL, done INTEGER NOT NULL DEFAULT 0, category INTEGER NOT NULL, FOREIGN KEY(category) REFERENCES category(rowid))',args:[]},
+		{sql:'CREATE TABLE task(name TEXT NOT NULL, done INTEGER NOT NULL DEFAULT 0, category INTEGER NOT NULL, note TEXT DEFAULT ?, FOREIGN KEY(category) REFERENCES category(rowid))',args:['']},
 		{sql:'CREATE TABLE plan(day TEXT, gratitudes TEXT)',args:[]},
 		{sql:'CREATE TABLE planned(task INTEGER NOT NULL, plan INTEGER NOT NULL, rank INTEGER NOT NULL, FOREIGN KEY(task) REFERENCES task(rowid), FOREIGN KEY(plan) REFERENCES plan(rowid))',args:[]}
+	],false);
+
+	db.closeAsync();
+}
+
+export async function update1DB(){
+	const db=sqlite.openDatabase('quickPlanner');
+
+	await db.execAsync([
+		{sql:'ALTER TABLE task ADD note TEXT DEFAULT \'\' ',args:[]}
 	],false);
 
 	db.closeAsync();
@@ -263,6 +275,8 @@ export async function getPlan(id){
 	],true);
 	planned = planned.rows;
 
+	db.closeAsync();
+
 	return new Plan(id,plan.day,plan.gratitudes,planned.map(row=>new Planned(row.task,row.rank)));
 }
 
@@ -298,19 +312,29 @@ export async function getCategoriesFull(){
 		[tasks]= await db.execAsync([
 			{sql:'SELECT rowid,* FROM task WHERE category=? ORDER BY name ASC',args:[cat.rowid]}
 		],true);
-		tasks=tasks.rows.map(task=>new Task(task.rowid,task.name,task.done,category));
+		tasks=tasks.rows.map(task=>new Task(task.rowid,task.name,task.done,task.note,category));
 		cats=cats.concat(new Category(category.id,category.name,category.color,tasks));
 	}
 	db.closeAsync();
 	return cats;
 }
 
-export async function addTask(label,category){
+export async function addTask(label,note,category){
 	const db=sqlite.openDatabase('quickPlanner');
 	await db.execAsync([
-		{sql:'INSERT INTO task(name,category) VALUES(?,?)',args:[label,Number(category)]}
+		{sql:'INSERT INTO task(name,note,category) VALUES(?,?,?)',args:[label,note,Number(category)]}
 	],false);
 	db.closeAsync();
+}
+
+export async function getExcludes(){
+	const db=sqlite.openDatabase('quickPlanner');
+	const active=await AsyncStorage.getItem('activeDay');
+	let [excludes]=await db.execAsync([
+		{sql:'SELECT task FROM planned WHERE plan=?',args:[Number(active)]}
+	],true);
+	db.closeAsync();
+	return excludes.rows.map(t=>t.task);
 }
 
 export async function addPlanned(plan,task,rank){

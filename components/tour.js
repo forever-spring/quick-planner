@@ -14,7 +14,7 @@ export default function Tour({endAction}){
 	const lang = useContext(settingsContext).AppLanguage;
 	const dir = lang in ['fa']?'rtl':'ltr';
 
-	const end = 5;
+	const end = 7;
 	const [current,setCurrent] = useState(0);
 
 	if(current>=end){
@@ -43,14 +43,18 @@ const shots = {
 		require('../assets/shots/en2.png'),
 		require('../assets/shots/en3.png'),
 		require('../assets/shots/en4.png'),
-		require('../assets/shots/en5.png')
+		require('../assets/shots/en5.png'),
+		require('../assets/shots/en6.png'),
+		require('../assets/shots/en7.png')
 	],
 	fa: [
 		require('../assets/shots/fa1.png'),
 		require('../assets/shots/fa2.png'),
 		require('../assets/shots/fa3.png'),
 		require('../assets/shots/fa4.png'),
-		require('../assets/shots/fa5.png')
+		require('../assets/shots/fa5.png'),
+		require('../assets/shots/fa6.png'),
+		require('../assets/shots/fa7.png')
 	],
 };
 

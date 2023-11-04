@@ -2,7 +2,7 @@
   "expo": {
     "name": "Quick Planner",
     "slug": "quick-planner",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./assets/graphics/icon.png",
     "userInterfaceStyle": "light",
@@ -24,7 +24,7 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/graphics/adaptive-icon.png",
 		"monochromeImage": "./assets/graphics/adaptive-icon.png",
-        "backgroundColor": "#fffafb"
+        "backgroundColor": "#f3f3f3"
       },
       "package": "ir.foreverspring.quickplanner"
     },

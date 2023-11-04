@@ -1,15 +1,28 @@
 import { LinearGradient } from "expo-linear-gradient";
 import { View, Text, Image, Pressable, StyleSheet, PixelRatio, Modal } from "react-native";
-import { useContext, useEffect, useState, useRef } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { TaskModal, CategoryModal } from "./createModals";
 import { WarningModalTwo } from "./warn";
+import { TextButton } from "./buttons";
 
 import { settingsContext } from "../assets/utils/settings";
-import { textStyle, textColor, icons, imageColor } from "../assets/utils/common";
-import { categoryColors } from "../assets/utils/colors";
-import { deleteWarn } from "../assets/utils/translations";
+import { textStyle, textColor, icons, imageColor, modalBasic, shadow } from "../assets/utils/common";
+import { categoryColors,themeColors } from "../assets/utils/colors";
+import { deleteWarn, infoModal } from "../assets/utils/translations";
+import { getExcludes } from "../assets/utils/data";
 
+export function InfoModal({text,end}){
+	const theme = useContext(settingsContext).DarkTheme ? 'dark' : 'light';
+	const lang = useContext(settingsContext).AppLanguage;
+
+	return(
+		<View style={modalBasic[theme]}><View style={{...modalBasic.box,...shadow[theme],...styles[theme]}}>
+			<Text style={{...textStyle.body,...textColor[theme]}}>{text}</Text>
+			<TextButton label={infoModal[lang]} action={end}/>
+		</View></View>
+	);
+}
 
 export function PlannedItem({edit,planned,refresh}){
 	const theme = useContext(settingsContext).DarkTheme ? 'dark' : 'light';
@@ -17,6 +30,7 @@ export function PlannedItem({edit,planned,refresh}){
 	const [done, setDone] = useState(false);
 	const [task, setTask] = useState(false);
 	const [name, setName] = useState('');
+	const [info, setInfo] = useState(false);
 
 	useEffect(()=>{
 		const setUp = async()=>{
@@ -43,9 +57,12 @@ export function PlannedItem({edit,planned,refresh}){
 		if(edit){
 			return(
 				<View style={styles.row}>
+					<Modal transparent={true} visible={info} animationType="fade" onRequestClose={()=>setInfo(false)}>
+						<InfoModal text={planned.task.note} end={()=>setInfo(false)} />
+					</Modal>
 					<TapButton icon={done?'checkboxChecked':'checkbox'} action={flipDone} />
-					<Pressable onLongPress={remove}>
-						<Text style={{...textStyle.body,...textColor[theme],...styles.label}}>{name}</Text>
+					<Pressable onPress={()=>setInfo(true)} onLongPress={remove}>
+						<Text style={{...textStyle.body,...textColor[theme]}}>{name}</Text>
 					</Pressable>
 				</View>
 			);
@@ -62,7 +79,7 @@ export function PlannedItem({edit,planned,refresh}){
 	}
 }
 
-function TaskItem({task,full,picked,refresh}){
+function TaskItem({task,full,picked,refresh,exclude}){
 	const theme = useContext(settingsContext).DarkTheme? 'dark': 'light';
 	const lang = useContext(settingsContext).AppLanguage;
 
@@ -80,6 +97,7 @@ function TaskItem({task,full,picked,refresh}){
 
 	const [modal,setModal] = useState(false);
 	const [warn,setWarn] = useState(false);
+	const [info,setInfo] = useState(false);
 
 	const pick = ()=>{
 		picked(task.id);
@@ -92,7 +110,12 @@ function TaskItem({task,full,picked,refresh}){
 					<Modal transparent={true} visible={warn} animationType="fade" onRequestClose={()=>setWarn(false)}>
 						<WarningModalTwo text={deleteWarn.task[lang]} back={()=>setWarn(false)} ok={del} />
 					</Modal>
-					<Text style={{...styles.done,...styles.label,...textStyle.body,...textColor[theme]}}>{task.name}</Text>
+					<Modal transparent={true} visible={info} animationType="fade" onRequestClose={()=>setInfo(false)}>
+						<InfoModal text={task.note} end={()=>setInfo(false)} />
+					</Modal>
+					<Pressable style={styles.label} onPress={()=>setInfo(true)}>
+						<Text style={{...styles.done,...styles.label,...textStyle.body,...textColor[theme]}}>{task.name}</Text>
+					</Pressable>
 					<TapButton icon='undone' action={flipDone} />
 					<TapButton icon='delete' action={del} />
 				</View>
@@ -106,7 +129,12 @@ function TaskItem({task,full,picked,refresh}){
 					<Modal transparent={true} visible={warn} animationType="fade" onRequestClose={()=>setWarn(false)}>
 						<WarningModalTwo text={deleteWarn.task[lang]} back={()=>setWarn(false)} ok={del} />
 					</Modal>
-					<Text style={{...styles.label,...textStyle.body,...textColor[theme]}}>{task.name}</Text>
+					<Modal transparent={true} visible={info} animationType="fade" onRequestClose={()=>setInfo(false)}>
+						<InfoModal text={task.note} end={()=>setInfo(false)} />
+					</Modal>
+					<Pressable style={styles.label} onPress={()=>setInfo(true)}>
+						<Text style={{...textStyle.body,...textColor[theme]}}>{task.name}</Text>
+					</Pressable>
 					<TapButton icon='done' action={flipDone} />
 					<TapButton icon='edit' action={()=>setModal(true)} />
 					<TapButton icon='delete' action={()=>setWarn(true)} />
@@ -114,7 +142,7 @@ function TaskItem({task,full,picked,refresh}){
 			);
 		}
 	} else {
-		if(task.done){} else {
+		if(task.done||(task.id in exclude || task.id==exclude)){} else {
 			return (
 				<Pressable onPress={()=>pick(task.id)} style={styles.row}>
 					<Text>{task.name}</Text>
@@ -138,6 +166,16 @@ export function CategoryItem({category,full,picked,refresh}){
 		setWarn(false);
 		refresh();
 	};
+
+	const [exclude,setExclude] = useState(false);
+	useEffect(()=>{
+		const get= async()=>{
+			setExclude(await getExcludes());
+		};
+		if(!full){
+			get();
+		}
+	},[]);
 
 	const [modal,setModal] = useState(false);
 	const [warn,setWarn] = useState(false);
@@ -168,7 +206,7 @@ export function CategoryItem({category,full,picked,refresh}){
 				:null}
 			</LinearGradient>
 		);
-	} else {
+	} else if(!exclude){} else {
 		return (
 			<LinearGradient 
 				colors={[categoryColors[category.color]+'ff',categoryColors[category.color]+'00']} 
@@ -182,7 +220,7 @@ export function CategoryItem({category,full,picked,refresh}){
 				</View>
 				{open?
 					<View style={styles.taskBlock}>
-						{category.tasks.map(task=><TaskItem task={task} full={false} picked={picked} />)}
+						{category.tasks.map(task=><TaskItem task={task} full={false} picked={picked} exclude={exclude} />)}
 					</View>
 				:null}
 			</LinearGradient>
@@ -212,6 +250,7 @@ const iconSource = {
 	checkboxChecked: require('../assets/icons/checkbox-checked.png'),
 	view: require('../assets/icons/view.png'),
 	copy: require('../assets/icons/copy.png'),
+	remove: require('../assets/icons/close.png'),
 };
 
 const styles = StyleSheet.create({
@@ -244,5 +283,11 @@ const styles = StyleSheet.create({
 		justifyContent: 'flex-start',
 		alignItems: 'center',
 		padding: 4*PixelRatio.get(),
+	},
+	light: {
+		backgroundColor: themeColors.light,
+	},
+	dark: {
+		backgroundColor: themeColors.dark,
 	},
 });
