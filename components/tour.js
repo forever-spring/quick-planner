@@ -12,7 +12,7 @@ import { themeColors } from "../assets/utils/colors";
 export default function Tour({endAction}){
 	const theme = useContext(settingsContext).DarkTheme ? 'dark' : 'light';
 	const lang = useContext(settingsContext).AppLanguage;
-	const dir = lang in ['fa']?'rtl':'ltr';
+	const dir = ['fa'].includes(lang)?'rtl':'ltr';
 
 	const end = 7;
 	const [current,setCurrent] = useState(0);

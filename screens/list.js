@@ -2,6 +2,7 @@ import { StatusBar } from 'react-native';
 import { View, ScrollView, Modal } from "react-native";
 import { GestureHandlerRootView,GestureDetector, Gesture, Directions } from "react-native-gesture-handler";
 import { useContext, useEffect, useState } from "react";
+import { useIsFocused } from '@react-navigation/native';
 
 import Header from "../components/topBars";
 import { DialButton } from "../components/buttons";
@@ -18,7 +19,7 @@ import { getCategoriesFull } from "../assets/utils/data";
 export default function List(props){
 	const theme = useContext(settingsContext).DarkTheme ? 'dark' : 'light';
 	const lang = useContext(settingsContext).AppLanguage;
-	const dir = lang in ['fa']?'rtl':'ltr';
+	const dir = ['fa'].includes(lang)?'rtl':'ltr';
 	const swipe = Gesture.Fling().direction(Directions.LEFT).onStart(()=>{
 		props.navigation.navigate('plan');
 	});
@@ -26,15 +27,19 @@ export default function List(props){
 	const [categoryModal,setCategoryModal] = useState(false);
 	const [taskModal,setTaskModal] = useState(false);
 	const [categories,setCategories] = useState([]);
+	const focus = useIsFocused();
 
 	useEffect(()=>{
 		const getCats = async() => {
 			setCategories(await getCategoriesFull());
 		};
-		getCats();
-	},[]);
+		if(focus){
+			getCats();
+		}
+	},[focus]);
 
 	const refresh = async() => {
+		setCategories([]);
 		setCategories(await getCategoriesFull());
 	};
 	

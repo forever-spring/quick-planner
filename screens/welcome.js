@@ -15,7 +15,7 @@ import { themeColors } from '../assets/utils/colors';
 export default function Welcome({signal}){
 	const theme = useContext(settingsContext).DarkTheme ? 'dark' : 'light';
 	const lang = useContext(settingsContext).AppLanguage;
-	const dir = lang in ['fa']? 'rtl':'ltr';
+	const dir = ['fa'].includes(lang)? 'rtl':'ltr';
 
 	const [tour, setTour] = useState(false);
 	const [goal, setGoal] = useState('');

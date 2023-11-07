@@ -16,7 +16,7 @@ import { themeColors } from '../assets/utils/colors';
 export default function About(props){
 	const theme = useContext(settingsContext).DarkTheme ? 'dark' : 'light';
 	const lang = useContext(settingsContext).AppLanguage;
-	const dir = lang in ['fa']?'rtl':'ltr';
+	const dir = ['fa'].includes(lang)?'rtl':'ltr';
 
 	const copyWeb = ()=>{
 		clipboard.setStringAsync('https://foreverspring.ir');

@@ -11,7 +11,7 @@ import { settings } from "../assets/utils/translations";
 export default function Settings(props){
 	const context = useContext(settingsContext);
 	const lang = context.AppLanguage;
-	const dir = lang in ['fa']?'rtl':'ltr';
+	const dir = ['fa'].includes(lang)?'rtl':'ltr';
 	const theme = context.DarkTheme? 'dark':'light';
 	
 	return(

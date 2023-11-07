@@ -34,21 +34,20 @@ export function PlannedItem({edit,planned,refresh}){
 
 	useEffect(()=>{
 		const setUp = async()=>{
-			await planned.getTask();
+			setTask(await planned.getTask());
 			setName(planned.task.name);
 			setDone(planned.task.done);
-			setTask(true);
 		};
 		setUp();
 	},[]);
 
 	const flipDone = async()=>{
-		planned.task.flipDone();
+		task.flipDone();
 		setDone(!done);
 	};
 
 	const remove = ()=>{
-		refresh(planned.task.id);
+		refresh(task.id);
 	};
 
 	const voidCallBack = ()=>{};
@@ -58,7 +57,7 @@ export function PlannedItem({edit,planned,refresh}){
 			return(
 				<View style={styles.row}>
 					<Modal transparent={true} visible={info} animationType="fade" onRequestClose={()=>setInfo(false)}>
-						<InfoModal text={planned.task.note} end={()=>setInfo(false)} />
+						<InfoModal text={task.note} end={()=>setInfo(false)} />
 					</Modal>
 					<TapButton icon={done?'checkboxChecked':'checkbox'} action={flipDone} />
 					<Pressable onPress={()=>setInfo(true)} onLongPress={remove}>
@@ -142,9 +141,9 @@ function TaskItem({task,full,picked,refresh,exclude}){
 			);
 		}
 	} else {
-		if(task.done||(task.id in exclude || task.id==exclude)){} else {
+		if(task.done||exclude.includes(task.id)){} else {
 			return (
-				<Pressable onPress={()=>pick(task.id)} style={styles.row}>
+				<Pressable onPress={pick} style={styles.row}>
 					<Text>{task.name}</Text>
 				</Pressable>
 			);
@@ -230,7 +229,7 @@ export function CategoryItem({category,full,picked,refresh}){
 
 export function TapButton({icon,action}){
 	const theme = useContext(settingsContext).DarkTheme ? 'dark' : 'light';
-	const dir = useContext(settingsContext).AppLanguage in ['fa']?'rtl':'ltr';
+	const dir = ['fa'].includes(useContext(settingsContext).AppLanguage)?'rtl':'ltr';
 
 	return (
 		<Pressable onPress={action} style={styles.button}>

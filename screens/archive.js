@@ -1,8 +1,9 @@
 import { StatusBar } from 'react-native';
-import { Text, View, ScrollView, PixelRatio, StyleSheet, Modal } from "react-native";
+import { Text, View, ScrollView, PixelRatio, StyleSheet } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { GestureHandlerRootView,GestureDetector, Gesture, Directions } from "react-native-gesture-handler";
 import { useContext, useEffect, useState } from "react";
+import { useIsFocused } from '@react-navigation/native';
 
 import Header from "../components/topBars";
 import { TapButton, PlannedItem } from "../components/items";
@@ -17,7 +18,7 @@ import { getArchived, getPlan, delPlan } from "../assets/utils/data";
 export default function Archive(props){
 	const theme = useContext(settingsContext).DarkTheme ? 'dark' : 'light';
 	const lang = useContext(settingsContext).AppLanguage;
-	const dir = lang in ['fa']?'rtl':'ltr';
+	const dir = ['fa'].includes(lang)?'rtl':'ltr';
 	const mode = useContext(settingsContext).DateStyle;
 	const swipe = Gesture.Fling().direction(Directions.RIGHT).onStart(()=>{
 		props.navigation.navigate('plan');
@@ -26,6 +27,7 @@ export default function Archive(props){
 	const [archives,setArchives] = useState([]);
 	const [archive,setArchive] = useState({});
 	const [listView,setListView] = useState(true);
+	const focus = useIsFocused();
 
 	useEffect(()=>{
 		const setUp = async()=>{
@@ -34,8 +36,10 @@ export default function Archive(props){
 				setArchives(await getArchived(value));
 			}
 		};
-		setUp();
-	});
+		if(focus){
+			setUp();
+		}
+	},[focus]);
 
 	const pick = async(id)=>{
 		setArchive(await getPlan(id));

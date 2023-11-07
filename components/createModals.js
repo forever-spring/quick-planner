@@ -35,8 +35,8 @@ export function TaskModal({mode,onEnd,refresh,task}){
 	const createTask = async() =>{
 		if(cat!==0 && lbl!==''){
 			await addTask(lbl,note,cat);
-			onEnd();
 			refresh();
+			onEnd();
 		} else if(cat!==0){
 			setMessage(createModals.warn.task[lang][0]);
 			setWarn(true);
@@ -51,8 +51,8 @@ export function TaskModal({mode,onEnd,refresh,task}){
 	const updateTask = async() =>{
 		if(cat!==0&&lbl!==''){
 			await task.update(lbl,note,cat);
-			onEnd();
 			refresh();
+			onEnd();
 		} else if(cat!==0){
 			setMessage(createModals.warn.task[lang][0]);
 			setWarn(true);
@@ -113,9 +113,8 @@ export function CategoryModal({mode,onEnd,refresh,category}){
 	const createCat = async() => {
 		if(lbl!==''){
 			await addCategory(lbl,col);
-			onEnd();
 			refresh();
-			// refresh the page
+			onEnd();
 		} else {
 			setMessage(listPage.warn.category[lang]);
 			setWarn(true);
@@ -124,8 +123,8 @@ export function CategoryModal({mode,onEnd,refresh,category}){
 	const updateCat = async() => {
 		if(lbl!==''){
 			await category.update(lbl,col);
-			onEnd();
 			refresh();
+			onEnd();
 		} else {
 			setMessage(listPage.warn.category[lang]);
 			setWarn(true);

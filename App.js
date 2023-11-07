@@ -39,7 +39,7 @@ export default function App() {
 
 	const appSettings={
 		DarkTheme: theme=='dark' ? true : false,
-		AppLanguage: lang in ['fa','en'] ? lang : 'en',
+		AppLanguage: ['fa','en'].includes(lang) ? lang : 'en',
 		DateStyle: 1,
 		WeekStart: 1,
 	};

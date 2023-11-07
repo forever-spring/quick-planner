@@ -30,7 +30,7 @@ export function TextButton({label,action,style,layout}){
 
 export function TextIconButton({icon,label,action,style}){
 	const theme = useContext(settingsContext).DarkTheme ? 'dark' : 'light';
-	const dir = useContext(settingsContext).AppLanguage in ['fa']?'rtl':'ltr';
+	const dir = ['fa'].includes(useContext(settingsContext).AppLanguage)?'rtl':'ltr';
 
 	if(style==undefined){
 		style={};
@@ -46,7 +46,7 @@ export function TextIconButton({icon,label,action,style}){
 
 export function IconButton ({icon,action}){
 	const theme = useContext(settingsContext).DarkTheme ? 'dark' : 'light';
-	const dir = useContext(settingsContext).AppLanguage in ['fa']?'rtl':'ltr';
+	const dir = ['fa'].includes(useContext(settingsContext).AppLanguage)?'rtl':'ltr';
 
 	return (
 		<Pressable onPress={action} style={{...styles.button,...shadow[theme],...styles.iconButton}}>

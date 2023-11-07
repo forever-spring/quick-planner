@@ -3,6 +3,7 @@ import { Text, View, ScrollView, TextInput, Pressable, Image, StyleSheet, PixelR
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { GestureHandlerRootView,GestureDetector, Gesture, Directions } from "react-native-gesture-handler";
 import { useContext, useEffect, useState, useRef } from "react";
+import { useIsFocused } from '@react-navigation/native';
 
 import Header from "../components/topBars";
 import VisionBoard from "../components/visionBoard";
@@ -22,7 +23,7 @@ import { addPlan, getPlan, getCategoriesFull, addPlanned, getPlanned, delPlanned
 export default function Plan(props){
 	const theme = useContext(settingsContext).DarkTheme ? 'dark' : 'light';
 	const lang = useContext(settingsContext).AppLanguage;
-	const dir = lang in ['fa']?'rtl':'ltr';
+	const dir = ['fa'].includes(lang)?'rtl':'ltr';
 
 	const swipeR = Gesture.Fling().direction(Directions.RIGHT).onStart(()=>{
 		props.navigation.navigate('list');
@@ -34,6 +35,7 @@ export default function Plan(props){
 
 	const [plan, setPlan] = useState({});
 	const [warning, setWarning] = useState(false);
+	const focus = useIsFocused();
 
 	useEffect(()=>{
 		const getActive = async() => {
@@ -61,7 +63,6 @@ export default function Plan(props){
 		setPlan({});
 		const newPlan = await addPlan();
 		setPlan(newPlan);
-		await AsyncStorage.setItem('activeDay',String(newPlan.id));
 	};
 	
 	if(!Object.keys(plan).length){
@@ -75,6 +76,7 @@ export default function Plan(props){
 			</View>
 		);
 	} else {
+		AsyncStorage.setItem('activeDay',String(plan.id));
 		return(
 			<View style={{...containers[theme],...containers[dir]}}>
 				<StatusBar style={theme} />
@@ -83,7 +85,7 @@ export default function Plan(props){
 					<VisionBoard />
 					<DayComponent day={plan.day} />
 					<GratitudesComponent values={plan.getGratitudes()} action={setGratitudes} />
-					<PlannedComponent tasks={plan.planned} planId={plan.id} />
+					<PlannedComponent focus={focus} planId={plan.id} />
 				</ScrollView></GestureDetector></GestureHandlerRootView>
 				<HoverButton icon='archive' action={()=>setWarning(true)} />
 				<Modal transparent={true} onRequestClose={()=>setWarning(false)} animationType="fade" visible={warning}>
@@ -94,12 +96,12 @@ export default function Plan(props){
 	}
 }
 
-function PlannedComponent({tasks,planId}){
+function PlannedComponent({focus,planId}){
 	const theme = useContext(settingsContext).DarkTheme?'dark':'light';
 	const lang = useContext(settingsContext).AppLanguage;
 
 	const [open,setOpen] = useState(false);
-	const [planned,setPlanned] = useState(tasks);
+	const [planned,setPlanned] = useState([]);
 	const categories = useRef([]);
 	const openModal = async()=>{
 		categories.current=await getCategoriesFull();
@@ -113,6 +115,16 @@ function PlannedComponent({tasks,planId}){
 		await delPlanned(planId,taskId);
 		setPlanned(await getPlanned(planId));
 	};
+
+	useEffect(()=>{
+		const getTasks = async()=>{
+			setPlanned([]);
+			setPlanned(await getPlanned(planId));
+		};
+		if(focus){
+			getTasks();
+		}
+	},[focus]);
 
 	return (
 		<View style={styles.planned}>
@@ -340,6 +352,7 @@ const styles = StyleSheet.create({
 	},
 	plannedList:{
 		marginStart: 4*PixelRatio.get(),
+		marginEnd: 8*PixelRatio.get(),
 		flex:1
 	},
 	pickModal:{
