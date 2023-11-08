@@ -53,6 +53,7 @@ export default function Archive(props){
 	const del = async(id)=>{
 		await delPlan(id);
 		const value=await AsyncStorage.getItem('activeDay');
+		setArchive([]);
 		setArchive(await getArchived(value));
 	};
 	

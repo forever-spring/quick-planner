@@ -116,7 +116,7 @@ function TaskItem({task,full,picked,refresh,exclude}){
 						<Text style={{...styles.done,...styles.label,...textStyle.body,...textColor[theme]}}>{task.name}</Text>
 					</Pressable>
 					<TapButton icon='undone' action={flipDone} />
-					<TapButton icon='delete' action={del} />
+					<TapButton icon='delete' action={()=>setWarn(true)} />
 				</View>
 			);
 		} else {
