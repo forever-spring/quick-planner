@@ -31,7 +31,7 @@ export default function About(props){
 
 	return(
 		<View style={{...containers[theme],...containers[dir]}}>
-			<StatusBar style={theme} />
+			<StatusBar backgroundColor={themeColors[theme]} barStyle={theme==='dark'?'light-content':'dark-content'} />
 			<Header page='about' navigation={props.navigation} navBar={false} />
 			<View style={containers.scroll}><ScrollView>
 				<View style={styles.wrap}>

@@ -33,7 +33,7 @@ export default function Welcome({signal}){
 
 	return(
 		<View style={{...containers[theme],...containers[dir]}}>
-			<StatusBar style={theme} />
+			<StatusBar backgroundColor={themeColors[theme]} barStyle={theme==='dark'?'light-content':'dark-content'} />
 			<View style={containers.scroll}><ScrollView>
 				<Text style={{...textStyle.huge,...textColor[theme],...styles.welcome}}>{welcomePage.welcome[lang]}
 					<Text style={textColor.primary}>Quick Planner</Text>

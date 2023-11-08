@@ -7,6 +7,7 @@ import Header from "../components/topBars";
 import { containers, textStyle, textColor, icons, imageColor } from "../assets/utils/common";
 import { settingsContext } from "../assets/utils/settings";
 import { settings } from "../assets/utils/translations";
+import { themeColors } from '../assets/utils/colors';
 
 export default function Settings(props){
 	const context = useContext(settingsContext);
@@ -16,7 +17,7 @@ export default function Settings(props){
 	
 	return(
 		<View style={{...containers[theme],...containers[dir]}}>
-			<StatusBar style={theme} />
+			<StatusBar backgroundColor={themeColors[theme]} barStyle={theme==='dark'?'light-content':'dark-content'} />
 			<Header page='settings' navigation={props.navigation} navBar={false} />
 			<View style={containers.scroll}><ScrollView>
 				<SettingItemSwitch title={settings.DarkTheme.title[lang]} value={theme=='dark'} dispatch={props.dispatchers.DarkTheme} />

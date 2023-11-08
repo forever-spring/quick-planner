@@ -12,6 +12,7 @@ import { CategoryModal, TaskModal } from "../components/createModals";
 import { containers } from "../assets/utils/common";
 import { settingsContext } from "../assets/utils/settings";
 import { listPage } from "../assets/utils/translations";
+import { themeColors } from '../assets/utils/colors';
 
 import { getCategoriesFull } from "../assets/utils/data";
 
@@ -45,7 +46,7 @@ export default function List(props){
 	
 	return(
 		<View style={{...containers[theme],...containers[dir]}}>
-			<StatusBar style={theme} />
+			<StatusBar backgroundColor={themeColors[theme]} barStyle={theme==='dark'?'light-content':'dark-content'} />
 			<Header page='list' navigation={props.navigation} navBar={true} />
 			<GestureHandlerRootView style={containers.scroll}><GestureDetector gesture={swipe}><ScrollView>
 				{categories.map(cat=><CategoryItem category={cat} full={true} refresh={refresh} />)}

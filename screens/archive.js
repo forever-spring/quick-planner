@@ -11,6 +11,7 @@ import { HoverButton } from "../components/buttons";
 
 import { containers, textStyle, textColor } from "../assets/utils/common";
 import { settingsContext } from "../assets/utils/settings";
+import { themeColors } from '../assets/utils/colors';
 
 import { getArchived, getPlan, delPlan } from "../assets/utils/data";
 
@@ -58,7 +59,7 @@ export default function Archive(props){
 	if(listView){
 		return(
 			<View style={{...containers[theme],...containers[dir]}}>
-				<StatusBar style={theme} />
+				<StatusBar backgroundColor={themeColors[theme]} barStyle={theme==='dark'?'light-content':'dark-content'} />
 				<Header page='archive' navigation={props.navigation} navBar={true} />
 				<GestureHandlerRootView style={containers.scroll}><GestureDetector gesture={swipe}><ScrollView>
 					{archives.map(item=>

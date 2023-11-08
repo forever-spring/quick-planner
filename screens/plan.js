@@ -79,7 +79,7 @@ export default function Plan(props){
 		AsyncStorage.setItem('activeDay',String(plan.id));
 		return(
 			<View style={{...containers[theme],...containers[dir]}}>
-				<StatusBar style={theme} />
+				<StatusBar backgroundColor={themeColors[theme]} barStyle={theme==='dark'?'light-content':'dark-content'} />
 				<Header page='plan' navigation={props.navigation} navBar={true} />
 				<GestureHandlerRootView style={containers.scroll}><GestureDetector gesture={swipes}><ScrollView>
 					<VisionBoard />
