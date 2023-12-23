@@ -37,6 +37,6 @@
     "plugins": [
       "expo-localization"
     ],
-    "owner": "SolaCode"
+    "owner": "solacode"
   }
 }
