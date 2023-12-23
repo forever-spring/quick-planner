@@ -63,7 +63,7 @@ export default function List(props){
 				<CategoryModal onEnd={()=>setCategoryModal(false)} refresh={refresh} mode={0} />
 			</Modal>
 			<Modal transparent={true} visible={taskModal} animationType="fade" onRequestClose={()=>setTaskModal(false)}>
-				<TaskModal onEnd={()=>setTaskModal(false)} refresh={refresh} mode={0} />
+				<TaskModal onEnd={()=>setTaskModal(false)} refresh={refresh} mode={0} cat_id={0} />
 			</Modal>
 		</View>
 	);

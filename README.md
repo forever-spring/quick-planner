@@ -3,11 +3,11 @@ Quick Planner is a mobile application that helps you to plan your tasks quickly 
 
 It is written with React Native and Expo, made with love by
 
-![Forever Spring](/assets/graphics/fs.png)
+![SolaCode](/assets/graphics/logo.png)
 
 _It is currently only available for android!_
 
-_It has not been uploaded to Google Play Store, but you can download it from [HERE](https://github.com/forever-spring/quick-planner/blob/master/app/Quick%20Planner%20v1.1.0.apk)_
+<!-- _It has not been uploaded to Google Play Store, but you can download it from [HERE]()_ -->
 
 ## Features
 * Easy to use
@@ -34,4 +34,4 @@ _It has not been uploaded to Google Play Store, but you can download it from [HE
 * Do you wish to see a feature not listed?
 * Do you want to help with translating the app to another language?
 
-Please feel free to contact me via email at: foreverspring37 [at] gmail [dot] com
+Please feel free to contact me via email at: solacode.ahw [at] gmail [dot] com

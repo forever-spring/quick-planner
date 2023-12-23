@@ -270,7 +270,7 @@ function DropDown({day,options}){
 	return (
 		<View>
 			<Pressable ref={elemRef} onPress={openMenu} style={{...styles.dropDown,...textInput[theme]}}>
-				<Text style={{...textStyle.body,...textColor.gray}}>{value===''?'Week Day':weekDays[lang][value]}</Text>
+				<Text style={{...textStyle.body,...textColor.gray}}>{value===''?planPage.weekDay[lang]:weekDays[lang][value]}</Text>
 				<Image style={{...imageColor[theme],...icons.bigIcon}} source={require('../assets/icons/dropdown.png')} />
 			</Pressable>
 			<Modal transparent={true} visible={open} animationType="fade" onRequestClose={()=>setOpen(false)}>

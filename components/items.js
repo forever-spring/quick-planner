@@ -178,9 +178,11 @@ export function CategoryItem({category,full,picked,refresh}){
 
 	const [modal,setModal] = useState(false);
 	const [warn,setWarn] = useState(false);
+	const [taskModal,setTaskModal] = useState(false);
 
 	if(full){
 		return (
+			<View>
 			<LinearGradient 
 				colors={[categoryColors[category.color]+'ff',categoryColors[category.color]+'00']} 
 				start={{x:0,y:0}} 
@@ -195,6 +197,7 @@ export function CategoryItem({category,full,picked,refresh}){
 				</Modal>
 				<TapButton icon={open?'expanded':'collapsed'} action={flipOpen} />
 				<Text style={{...styles.label,...textStyle.label,...textColor[theme]}}>{category.name}</Text>
+				<TapButton icon='add' action={()=>setTaskModal(true)} />
 				<TapButton icon='edit' action={()=>setModal(true)} />
 				<TapButton icon='delete' action={()=>setWarn(true)} />
 			</View>
@@ -204,6 +207,10 @@ export function CategoryItem({category,full,picked,refresh}){
 					</View>
 				:null}
 			</LinearGradient>
+			<Modal transparent={true} visible={taskModal} animationType="fade" onRequestClose={()=>setTaskModal(false)}>
+				<TaskModal onEnd={()=>setTaskModal(false)} refresh={refresh} mode={0} cat_id={category.id} />
+			</Modal>
+			</View>
 		);
 	} else if(!exclude){} else {
 		return (
@@ -250,6 +257,7 @@ const iconSource = {
 	view: require('../assets/icons/view.png'),
 	copy: require('../assets/icons/copy.png'),
 	remove: require('../assets/icons/close.png'),
+	add: require('../assets/icons/add.png')
 };
 
 const styles = StyleSheet.create({

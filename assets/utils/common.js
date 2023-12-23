@@ -19,7 +19,7 @@ export const icons = StyleSheet.create({
 		height: 30*PixelRatio.get(),
 	},
 	rtl: {
-		transform: [{scaleX: -1}],
+		transform: [{scaleX: 1}],
 	},
 	ltr: {
 		transform: [{scaleX: 1}],

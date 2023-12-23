@@ -1,7 +1,7 @@
 import * as sqlite from 'expo-sqlite';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { weekDays } from "./translations";
+import { weekDays,noDay } from "./translations";
 
 
 // JS OBJECT DEFINITION
@@ -16,11 +16,15 @@ class Day {
 		this.day=tmp.day;
 	}
 	display(mode,lang){
+		if(!this.date && !this.month && !this.year && !this.day){
+			return noDay[lang];
+		}
+		let day=this.day?'    -    '+weekDays[lang][this.day]:' ';
 		switch(mode){
 			case 1:
-				return String(this.date)+'    '+String(this.month)+'    '+String(this.year)+'    -    '+weekDays[lang][this.day];
+				return String(this.date)+'    '+String(this.month)+'    '+String(this.year)+day;
 			case 2:
-				return String(this.month)+'    '+String(this.date)+'    '+String(this.year)+'    -    '+weekDays[lang][this.day];
+				return String(this.month)+'    '+String(this.date)+'    '+String(this.year)+day;
 			default:
 				raise('Wrong mode passed to Day.display(mode,lang)');
 		}
@@ -371,7 +375,7 @@ export async function delPlanned(plan,task){
 export async function getArchived(active){
 	const db=sqlite.openDatabase('quickPlanner');
 	let [plans] = await db.execAsync([
-		{sql:'SELECT rowid,day FROM plan WHERE NOT rowid=?',args:[active]}
+		{sql:'SELECT rowid,day FROM plan WHERE NOT rowid=? ORDER BY rowid DESC',args:[active]}
 	],true);
 	plans=plans.rows;
 	db.closeAsync();

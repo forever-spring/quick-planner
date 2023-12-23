@@ -142,6 +142,11 @@ export const weekDays={
 	fa: ['یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنجشنبه','جمعه','شنبه'],
 };
 
+export const noDay={
+	en: 'no date',
+	fa: 'بدون تاریخ',
+};
+
 export const planPage = {
 	fills:{
 		date:{
@@ -178,7 +183,11 @@ export const planPage = {
 	warning:{
 		en: 'You are about to archive this plan, after which you will not be able to make any edits. Do you want to proceed?',
 		fa: 'شما در حال آرشیو کردن این برنامه هستید و دیگر قادر نخواهید بود آن را ویرایش کنید. آیا می‌خواهید ادامه دهید؟',
-	}
+	},
+	weekDay:{
+		en: 'Week Day',
+		fa: 'روز هفته',
+	},
 };
 
 export const listPage = {

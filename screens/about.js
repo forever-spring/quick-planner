@@ -19,10 +19,10 @@ export default function About(props){
 	const dir = ['fa'].includes(lang)?'rtl':'ltr';
 
 	const copyWeb = ()=>{
-		clipboard.setStringAsync('https://foreverspring.ir');
+		clipboard.setStringAsync('https://solacode.ir/');
 	};
 	const copyMail = ()=>{
-		clipboard.setStringAsync('foreverspring37@gmail.com');
+		clipboard.setStringAsync('solacode.ahw@gmail.com');
 	};
 	const copyWallet = ()=>{
 		clipboard.setStringAsync('bc1qqluh6n498fpef9wymaarqtkel9f4pln07wv0zc');
@@ -37,12 +37,12 @@ export default function About(props){
 				<View style={styles.wrap}>
 					<Text style={{...textStyle.body,...textColor[theme]}}>
 						<Text style={{...textColor.primary,...textStyle.title}}>Quick Planner</Text> is an android app by</Text>
-						<Image source={require('../assets/graphics/fs.png')} style={styles.fs}/>
+						<Image source={require('../assets/graphics/logo.png')} style={styles.logo}/>
 						<Text style={{...textStyle.body,...textColor[theme]}}>written with React Native.</Text>
 				</View>
 				<View style={styles.wrap}>
 					<View  style={styles.row}>
-						<Text style={{...textColorPrimary[theme],...textStyle.label}}> https://foreverspring.ir</Text>
+						<Text style={{...textColorPrimary[theme],...textStyle.label}}>solacode.ir</Text>
 						<TapButton icon='copy' action={copyWeb} />
 					</View>
 				</View>
@@ -51,7 +51,7 @@ export default function About(props){
 						To report any issues, please contact me via email:
 					</Text>
 					<View style={styles.row}>
-						<Text style={{...textStyle.label,...textColorPrimary[theme]}}>foreverspring37@gmail.com</Text>
+						<Text style={{...textStyle.label,...textColorPrimary[theme]}}>solacode.ahw@gmail.com</Text>
 						<TapButton icon='copy' action={copyMail} />
 					</View>
 				</View>
@@ -78,7 +78,7 @@ export default function About(props){
 }
 
 const styles = StyleSheet.create({
-	fs: {
+	logo: {
 		width: '50%',
 		marginHorizontal: '25%',
 		resizeMode: 'contain',

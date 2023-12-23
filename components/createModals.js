@@ -13,7 +13,7 @@ import { settingsContext } from "../assets/utils/settings";
 import { getCategories, addTask, addCategory } from "../assets/utils/data";
 
 
-export function TaskModal({mode,onEnd,refresh,task}){
+export function TaskModal({mode,onEnd,refresh,task,cat_id}){
 	// mode > 0: create, 1: edit
 	const theme = useContext(settingsContext).DarkTheme ? 'dark' : 'light';
 	const lang = useContext(settingsContext).AppLanguage;
@@ -30,7 +30,7 @@ export function TaskModal({mode,onEnd,refresh,task}){
 	},[]);
 
 	const [lbl,setLbl] = useState(mode?task.name:'');
-	const [cat,setCat] = useState(mode?task.category.id:0);
+	const [cat,setCat] = useState(mode?task.category.id:cat_id);
 	const [note,setNote] = useState(mode?task.note:'');
 	const createTask = async() =>{
 		if(cat!==0 && lbl!==''){
@@ -67,7 +67,7 @@ export function TaskModal({mode,onEnd,refresh,task}){
 
 	return (
 		<View style={modalBasic[theme]}><View style={{...modalBasic.box,...shadow[theme],...styles[theme]}}>
-			<Text style={{...textStyle.label,...textColor[theme],textAlign: 'center'}}>{createModals.newTask.label[lang]}</Text>
+			<Text style={{...textStyle.label,...textColor[theme],textAlign: 'center'}}>{createModals.newTask.label[lang][mode]}</Text>
 			<TextInput 
 				selectionColor={themeColors.accent.original} 
 				placeholder={createModals.newTask.fill[lang]}
@@ -140,7 +140,7 @@ export function CategoryModal({mode,onEnd,refresh,category}){
 
 	return (
 		<View style={modalBasic[theme]}><View style={{...modalBasic.box,...shadow[theme],...styles[theme]}}>
-			<Text style={{...textStyle.label,...textColor[theme],textAlign: 'center'}}>{createModals.newCat.label[lang]}</Text>
+			<Text style={{...textStyle.label,...textColor[theme],textAlign: 'center'}}>{createModals.newCat.label[lang][mode]}</Text>
 			<TextInput 
 				selectionColor={themeColors.accent.original} 
 				placeholder={createModals.newCat.fill[lang]}

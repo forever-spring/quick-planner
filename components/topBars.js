@@ -51,7 +51,7 @@ function TitleBar({page,navigation,onLayout}){
 
 	return(
 		<View style={styles.titleBar} onLayout={(obj)=>onLayout(1,obj['nativeEvent']['layout']['height'])}>
-			<Text style={{...textStyle.title,...textColor[theme]}}>{pageTitles[page][useContext(settingsContext).AppLanguage]}</Text>
+			<Text style={{...textStyle.title,...textColor.primary}}>{pageTitles[page][useContext(settingsContext).AppLanguage]}</Text>
 			{navOpen ? (
 				<View style={styles.navOpenView}>
 					<Pressable style={icons.smallIcon} onPress={toAbout}>
