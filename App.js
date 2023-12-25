@@ -90,13 +90,8 @@ export default function App() {
 	useEffect(()=>{
 		const initial = async() => {
 			const value = await AsyncStorage.getItem('init');
-			const up1 = await AsyncStorage.getItem('update1');
 			if(value==null){
 				await initDB();
-				await AsyncStorage.setItem('update1','done');
-				setDb(true);
-			} else if(up1==null){
-				await update1DB();
 				await AsyncStorage.setItem('update1','done');
 				setDb(true);
 			} else {

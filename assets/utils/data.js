@@ -229,19 +229,9 @@ export async function initDB(){
 
 	await db.execAsync([
 		{sql:'CREATE TABLE category(name TEXT NOT NULL, color TEXT NOT NULL)',args:[]},
-		{sql:'CREATE TABLE task(name TEXT NOT NULL, done INTEGER NOT NULL DEFAULT 0, category INTEGER NOT NULL, note TEXT DEFAULT ?, FOREIGN KEY(category) REFERENCES category(rowid))',args:['']},
+		{sql:'CREATE TABLE task(name TEXT NOT NULL, done INTEGER NOT NULL DEFAULT 0, category INTEGER NOT NULL, note TEXT DEFAULT \'\', FOREIGN KEY(category) REFERENCES category(rowid))',args:[]},
 		{sql:'CREATE TABLE plan(day TEXT, gratitudes TEXT)',args:[]},
 		{sql:'CREATE TABLE planned(task INTEGER NOT NULL, plan INTEGER NOT NULL, rank INTEGER NOT NULL, FOREIGN KEY(task) REFERENCES task(rowid), FOREIGN KEY(plan) REFERENCES plan(rowid))',args:[]}
-	],false);
-
-	db.closeAsync();
-}
-
-export async function update1DB(){
-	const db=sqlite.openDatabase('quickPlanner');
-
-	await db.execAsync([
-		{sql:'ALTER TABLE task ADD note TEXT DEFAULT \'\' ',args:[]}
 	],false);
 
 	db.closeAsync();
