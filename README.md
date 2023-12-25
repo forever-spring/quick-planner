@@ -7,7 +7,7 @@ It is written with React Native and Expo, made with love by
 
 _It is currently only available for android!_
 
-_It has not been uploaded to Google Play Store, but you can download it from [HERE](https://github.com/solacode-ahw/quick-planner/blob/master/app/Quick%20Planner%20v1.2.0.apk)_
+_It has not been uploaded to Google Play Store, but you can download it from [HERE](https://github.com/solacode-ahw/quick-planner/blob/master/app/QuickPlanner.apk)_
 
 ## Features
 * Easy to use
