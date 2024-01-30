@@ -26,6 +26,7 @@ _You can download it from [HERE](https://github.com/solacode-ahw/quick-planner/b
 * Try to write 3 things you are grateful for every day. It doesn't matter how small they are, they can remind you of the positive sides of life; which are usually overlooked!
 
 ## In Future Updates
+* Group Categories by color when viewing
 * Import/Export
 * Ability to re-arrange the planned tasks in a day
 
