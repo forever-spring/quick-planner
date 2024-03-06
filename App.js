@@ -19,7 +19,7 @@ import Archive from './screens/archive';
 import Welcome from "./screens/welcome";
 
 import * as Hooks from './assets/utils/settings.js';
-import { initDB, update1DB } from "./assets/utils/data";
+import { initDB } from "./assets/utils/data";
 
 
 const NavStack=createNativeStackNavigator();
@@ -41,7 +41,7 @@ export default function App() {
 		DarkTheme: theme=='dark' ? true : false,
 		AppLanguage: ['fa','en'].includes(lang) ? lang : 'en',
 		DateStyle: 1,
-		WeekStart: 1,
+		WeekStart: 6,
 	};
 	const dispatch={
 		DarkTheme: null,

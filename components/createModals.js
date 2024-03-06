@@ -1,4 +1,4 @@
-import { View, Text, TextInput, Modal, Pressable, StyleSheet, PixelRatio } from "react-native";
+import { View, Text, TextInput, Modal, Pressable, StyleSheet } from "react-native";
 import { useState, useContext, useEffect } from "react";
 
 import DropDown from './dropDown';
@@ -134,7 +134,7 @@ export function CategoryModal({mode,onEnd,refresh,category}){
 	const [height,setHeight] = useState(0);
 	const calcHeight = (h) => {
 		if(height===0){
-			setHeight(h+76*PixelRatio.get());
+			setHeight(h+150);
 		}
 	};
 
@@ -150,7 +150,7 @@ export function CategoryModal({mode,onEnd,refresh,category}){
 				onChangeText={setLbl} 
 				autoCapitalize="words" 
 			/>
-			<View style={{minHeight:height,marginVertical:8*PixelRatio.get()}} onLayout={(obj)=>calcHeight(obj['nativeEvent']['layout']['height'])}>
+			<View style={{minHeight:height,marginVertical:15}} onLayout={(obj)=>calcHeight(obj['nativeEvent']['layout']['height'])}>
 				<Text style={{...textStyle.label,...textColor[theme],...styles[theme]}}>{createModals.newCat.color[lang]}</Text>
 				<View style={styles.colorWrap}>
 					{Object.keys(categoryColors).map(color=>
@@ -197,36 +197,36 @@ const styles = StyleSheet.create({
 		backgroundColor: themeColors.dark,
 	},
 	colorWrap: {
-		width: 132*PixelRatio.get(),
-		height: 76*PixelRatio.get(),
+		width: 260,
+		height: 150,
 		flex: 1,
-		gap: 8*PixelRatio.get(),
+		gap: 15,
 		flexDirection: 'row',
 		flexWrap: 'wrap',
 		justifyContent: 'center',
 		alignItems: 'center',
-		margin: 8*PixelRatio.get(),
+		margin: 15,
 	},
 	colorSelect: {
-		width: 12*PixelRatio.get(),
-		height: 12*PixelRatio.get(),
-		borderRadius: 6*PixelRatio.get(),
+		width: 24,
+		height: 24,
+		borderRadius: 12,
 	},
 	colorSelectBorder: {
-		borderWidth: 0.75*PixelRatio.get(),
-		padding: 3.25*PixelRatio.get(),
+		borderWidth: 1,
+		padding: 7,
 	},
 	color: {
-		width: 20*PixelRatio.get(),
-		height: 20*PixelRatio.get(),
-		borderRadius: 10*PixelRatio.get(),
+		width: 40,
+		height: 40,
+		borderRadius: 20,
 	},
 	button: {
 		alignSelf: 'flex-end',
 	},
 	note: {
 		verticalAlign: 'top',
-		paddingHorizontal: 8*PixelRatio.get(),
-		paddingVertical: 8*PixelRatio.get(),
+		paddingHorizontal: 15,
+		paddingVertical: 15,
 	}
 });

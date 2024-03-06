@@ -1,22 +1,22 @@
-import { StyleSheet, PixelRatio, Dimensions } from "react-native";
+import { StyleSheet, Dimensions, PixelRatio } from "react-native";
 import { themeColors } from "./colors";
 
 export const icons = StyleSheet.create({
 	smallIcon: {
-		width: 10*PixelRatio.get(),
-		height: 10*PixelRatio.get(),
+		width: 20,
+		height: 20,
 	},
 	mediIcon: {
-		width: 15*PixelRatio.get(),
-		height: 15*PixelRatio.get()
+		width: 30,
+		height: 30
 	},
 	bigIcon: {
-		width: 20*PixelRatio.get(),
-		height: 20*PixelRatio.get(),
+		width: 40,
+		height: 40,
 	},
 	hugeIcon: {
-		width: 30*PixelRatio.get(),
-		height: 30*PixelRatio.get(),
+		width: 60,
+		height: 60,
 	},
 	rtl: {
 		transform: [{scaleX: 1}],
@@ -56,31 +56,31 @@ export const imageColorInvert = StyleSheet.create({
 export const textStyle = StyleSheet.create({
 	body:{
 		fontFamily: 'BalooBhaijaan2_400Regular',
-		fontSize: 10*PixelRatio.getFontScale()*PixelRatio.get(),
-		lineHeight: 16*PixelRatio.getFontScale()*PixelRatio.get(),
+		fontSize: 20*PixelRatio.getFontScale(),
+		lineHeight: 30*PixelRatio.getFontScale(),
 		verticalAlign: 'middle',
 		textAlignVertical: 'center',
 		textAlign: 'justify',
 	},
 	label:{
 		fontFamily: 'BalooBhaijaan2_500Medium',
-		fontSize: 10*PixelRatio.getFontScale()*PixelRatio.get(),
-		lineHeight: 16*PixelRatio.getFontScale()*PixelRatio.get(),
+		fontSize: 20*PixelRatio.getFontScale(),
+		lineHeight: 30*PixelRatio.getFontScale(),
 		verticalAlign: 'middle',
 		textAlignVertical: 'center',
 		textAlign: 'justify',
 	},
 	title:{
 		fontFamily: 'BalooBhaijaan2_500Medium',
-		fontSize: 14*PixelRatio.getFontScale()*PixelRatio.get(),
-		lineHeight: 22*PixelRatio.getFontScale()*PixelRatio.get(),
+		fontSize: 26*PixelRatio.getFontScale(),
+		lineHeight: 40*PixelRatio.getFontScale(),
 		verticalAlign: 'middle',
 		textAlign: 'justify',
 	},
 	huge:{
 		fontFamily: 'BalooBhaijaan2_500Medium',
-		fontSize: 16*PixelRatio.getFontScale()*PixelRatio.get(),
-		lineHeight: 26*PixelRatio.getFontScale()*PixelRatio.get(),
+		fontSize: 30*PixelRatio.getFontScale(),
+		lineHeight: 48*PixelRatio.getFontScale(),
 		verticalAlign: 'middle',
 		textAlignVertical: 'center',
 		textAlign: 'justify',
@@ -142,7 +142,7 @@ export const containers = StyleSheet.create({
 		flexDirection: 'column',
 		justifyContent: 'flex-start',
 		alignItems: 'stretch',
-		paddingTop: 16*PixelRatio.get(),
+		paddingTop: 30,
 	},
 	rtl: {
 		direction: 'rtl',
@@ -183,25 +183,25 @@ export const modalBasic = StyleSheet.create({
 		alignItems: 'center',
 	},
 	box: {
-		margin: 8*PixelRatio.get(),
-		borderRadius: 8*PixelRatio.get(),
-		padding: 8*PixelRatio.get(),
-		gap: 8*PixelRatio.get(),
+		margin: 15,
+		borderRadius: 15,
+		padding: 15,
+		gap: 15,
 		width: '90%',
 	}
 });
 
 export const textInput = StyleSheet.create({
 	borderBottom: {
-		padding: 4*PixelRatio.get(),
-		paddingVertical: 2*PixelRatio.get(),
-		borderBottomWidth: 0.75*PixelRatio.get(),
+		padding: 7.5,
+		paddingVertical: 4,
+		borderBottomWidth: 1,
 	},
 	roundCorner: {
-		paddingHorizontal: 4*PixelRatio.get(),
-		paddingVertical: 2*PixelRatio.get(),
-		borderWidth: 0.75*PixelRatio.get(),
-		borderRadius: 4*PixelRatio.get(),
+		paddingHorizontal: 7.5,
+		paddingVertical: 4,
+		borderWidth: 1,
+		borderRadius: 7.5,
 		textAlign: 'center',
 		textAlignVertical: 'center',
 	},

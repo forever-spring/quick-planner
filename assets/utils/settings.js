@@ -34,16 +34,6 @@ export function setLang(state, action) {
 	return action;
 }
 
-export function setCal(state,action) {
-	// action: num > 1: gregory, 2: persian
-
-	if(typeof(action)=='string'){
-		action=Number(action);
-	}
-	storeSettings('Calendar',action);
-	return action;
-}
-
 export function setDateStyle(state,action) {
 	// action: num > 1: dd mm yy, 2: mm dd yy, 3: dd month yy, 4: month dd yy
 

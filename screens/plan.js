@@ -1,5 +1,5 @@
 import { StatusBar } from 'react-native';
-import { Text, View, ScrollView, TextInput, Pressable, Image, StyleSheet, PixelRatio, Modal } from "react-native";
+import { Text, View, ScrollView, TextInput, Pressable, Image, StyleSheet, Modal } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { GestureHandlerRootView,GestureDetector, Gesture, Directions } from "react-native-gesture-handler";
 import { useContext, useEffect, useState, useRef } from "react";
@@ -11,13 +11,14 @@ import { PlannedItem } from "../components/items";
 import { TextIconButton, HoverButton } from "../components/buttons";
 import { WarningModalTwo } from "../components/warn";
 import { CategoryItem } from "../components/items";
+import { TaskModal } from '../components/createModals';
 
 import { containers, textColor, textStyle, textInput, imageColor, icons, shadow, modalBasic } from "../assets/utils/common";
 import { planPage, weekDays } from "../assets/utils/translations";
 import { settingsContext } from "../assets/utils/settings";
 import { themeColors } from "../assets/utils/colors";
 
-import { addPlan, getPlan, getCategoriesFull, addPlanned, getPlanned, delPlanned } from "../assets/utils/data";
+import { addPlan, getPlan, getCategoriesFull, addPlanned, getPlanned, delPlanned, getLastTask, upPlanned, downPlanned } from "../assets/utils/data";
 
 
 export default function Plan(props){
@@ -78,7 +79,7 @@ export default function Plan(props){
 	} else {
 		AsyncStorage.setItem('activeDay',String(plan.id));
 		return(
-			<View style={{...containers[theme],...containers[dir]}}>
+			<View style={{...containers[theme],...containers[dir],paddingBottom: 40}}>
 				<StatusBar backgroundColor={themeColors[theme]} barStyle={theme==='dark'?'light-content':'dark-content'} />
 				<Header page='plan' navigation={props.navigation} navBar={true} />
 				<GestureHandlerRootView style={containers.scroll}><GestureDetector gesture={swipes}><ScrollView>
@@ -102,6 +103,7 @@ function PlannedComponent({focus,planId}){
 
 	const [open,setOpen] = useState(false);
 	const [planned,setPlanned] = useState([]);
+	const [taskModal, setTaskModal]= useState(false);
 	const categories = useRef([]);
 	const openModal = async()=>{
 		categories.current=await getCategoriesFull();
@@ -113,7 +115,13 @@ function PlannedComponent({focus,planId}){
 	};
 	const refresh = async(taskId)=>{
 		await delPlanned(planId,taskId);
+		setPlanned([]);
 		setPlanned(await getPlanned(planId));
+	};
+	const pickNewTask = async()=>{
+		const id = await getLastTask();
+		picked(id);
+		setTaskModal(false);
 	};
 
 	useEffect(()=>{
@@ -126,6 +134,17 @@ function PlannedComponent({focus,planId}){
 		}
 	},[focus]);
 
+	const move = async(mode,task,rank)=>{
+		// mode = [up=1,down=0]
+		if(mode){
+			await upPlanned(planId,task,rank);
+		} else{
+			await downPlanned(planId,task,rank);
+		}
+		setPlanned([]);
+		setPlanned(await getPlanned(planId));
+	};
+
 	return (
 		<View style={styles.planned}>
 			<Modal transparent={true} visible={open} onRequestClose={()=>setOpen(false)} animationType="fade">
@@ -133,10 +152,14 @@ function PlannedComponent({focus,planId}){
 					<ScrollView>
 						{categories.current.map(cat=><CategoryItem category={cat} full={false} picked={picked} />)}
 					</ScrollView>
+					<TextIconButton icon='add' label={planPage.newTask[lang]} action={()=>setTaskModal(true)} style={{maxHeight:50,justifyContent:'center'}} />
 				</View></View>
 			</Modal>
+			<Modal transparent={true} visible={taskModal} animationType="fade" onRequestClose={()=>setTaskModal(false)}>
+				<TaskModal onEnd={()=>setTaskModal(false)} refresh={pickNewTask} mode={0} cat_id={0} />
+			</Modal>
 			<Text style={{...textStyle.label,...textColor[theme]}}>{planPage.planned.label[lang]}</Text>
-			<View style={styles.plannedList}>{planned.map(task=><PlannedItem edit={true} planned={task} refresh={refresh} />)}</View>
+			<View style={styles.plannedList}>{planned.map(task=><PlannedItem edit={true} planned={task} refresh={refresh} move={move} last={task.rank==planned.length} />)}</View>
 			<TextIconButton icon='plan' label={planPage.planned.button[lang]} action={openModal} />
 		</View>
 	);
@@ -297,28 +320,28 @@ const styles = StyleSheet.create({
 	dayView: {
 		flex: 1,
 		flexDirection: 'row',
-		padding: 8*PixelRatio.get(),
-		margin: 8*PixelRatio.get(),
+		padding: 15,
+		margin: 15,
 		justifyContent: 'center',
 		alignItems: 'center',
-		gap: 8*PixelRatio.get(),
+		gap: 15,
 	},
 	dropDown: {
 		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'space-between',
-		paddingStart: 4*PixelRatio.get(),
-		borderWidth: 0.75*PixelRatio.get(),
-		borderRadius: 4*PixelRatio.get(),
+		paddingStart: 7.5,
+		borderWidth: 1,
+		borderRadius: 7.5,
 	},
 	dropDownMenu: {
 		position: 'absolute',
-		padding: 4*PixelRatio.get(),
-		borderRadius: 4*PixelRatio.get(),
+		padding: 7.5,
+		borderRadius: 7.5,
 	},
 	dropDownItem: {
-		padding: 4*PixelRatio.get(),
+		padding: 7.5,
 	},
 	light: {
 		backgroundColor: themeColors.light,
@@ -327,17 +350,17 @@ const styles = StyleSheet.create({
 		backgroundColor: themeColors.dark,
 	},
 	gratitudeView: {
-		margin: 16*PixelRatio.get(),
+		margin: 30,
 		flex:1,
-		gap: 8*PixelRatio.get(),
+		gap: 15,
 	},
 	gratitudeInput: {
 		flex:1,
 		flexDirection: 'row',
 		justifyContent: 'flex-start',
 		alignItems: 'center',
-		gap: 8*PixelRatio.get(),
-		paddingStart: 8*PixelRatio.get(),
+		gap: 15,
+		paddingStart: 15,
 	},
 	gratitude: {
 		flex: 1,
@@ -346,14 +369,15 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'flex-start',
 		alignItems: 'flex-start',
-		margin: 16*PixelRatio.get(),
-		marginTop: 32*PixelRatio.get(),
-		gap: 8*PixelRatio.get(),
+		margin: 30,
+		marginTop: 60,
+		gap: 15,
 	},
 	plannedList:{
-		marginStart: 4*PixelRatio.get(),
-		marginEnd: 8*PixelRatio.get(),
-		flex:1
+		marginStart: 7.5,
+		marginEnd: 15,
+		flex:1,
+		width: '100%'
 	},
 	pickModal:{
 		height: '75%',

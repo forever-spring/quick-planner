@@ -1,4 +1,4 @@
-import { View, Pressable, Text, Image, Modal, PixelRatio, StyleSheet } from 'react-native';
+import { View, Pressable, Text, Image, Modal, StyleSheet } from 'react-native';
 import { useContext, useState, useRef } from 'react';
 
 import { settingsContext } from '../assets/utils/settings';
@@ -58,19 +58,19 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'space-between',
-		paddingStart: 4*PixelRatio.get(),
-		borderWidth: 0.75*PixelRatio.get(),
-		borderRadius: 4*PixelRatio.get(),
+		paddingStart: 7.5,
+		borderWidth: 1,
+		borderRadius: 7.5,
 		alignSelf: 'flex-start',
-		minHeight: 20*PixelRatio.get(),
+		minHeight: 40,
 	},
 	dropDownMenu: {
 		position: 'absolute',
-		padding: 4*PixelRatio.get(),
-		borderRadius: 4*PixelRatio.get(),
+		padding: 7.5,
+		borderRadius: 7.5,
 	},
 	dropDownItem: {
-		padding: 4*PixelRatio.get(),
+		padding: 7.5,
 	},
 	light: {
 		backgroundColor: themeColors.light,

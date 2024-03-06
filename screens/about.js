@@ -1,6 +1,6 @@
 import * as clipboard from 'expo-clipboard';
 import { StatusBar } from 'react-native';
-import { Text, View, ScrollView, Image, StyleSheet, PixelRatio, Modal } from "react-native";
+import { Text, View, ScrollView, Image, StyleSheet, Modal } from "react-native";
 import { useContext, useState } from "react";
 
 import Header from "../components/topBars";
@@ -87,18 +87,18 @@ const styles = StyleSheet.create({
 		textDecorationLine: 'underline',
 	},
 	wrap: {
-		margin: 16*PixelRatio.get(),
+		margin: 30,
 	},
 	row:{
 		flex:1,
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
-		margin: 8*PixelRatio.get(),
+		margin: 15,
 	},
 	button: {
 		alignSelf: 'center',
-		marginBottom: 32*PixelRatio.get()
+		marginBottom: 60
 	},
 	light: {
 		backgroundColor: themeColors.light,

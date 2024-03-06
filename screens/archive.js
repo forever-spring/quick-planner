@@ -1,5 +1,5 @@
 import { StatusBar } from 'react-native';
-import { Text, View, ScrollView, PixelRatio, StyleSheet } from "react-native";
+import { Text, View, ScrollView, StyleSheet } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { GestureHandlerRootView,GestureDetector, Gesture, Directions } from "react-native-gesture-handler";
 import { useContext, useEffect, useState } from "react";
@@ -52,9 +52,8 @@ export default function Archive(props){
 	};
 	const del = async(id)=>{
 		await delPlan(id);
-		const value=await AsyncStorage.getItem('activeDay');
-		setArchive([]);
-		setArchive(await getArchived(value));
+		const archives=await getArchived(await AsyncStorage.getItem('activeDay'));
+		setArchives(archives);
 	};
 	
 	if(listView){
@@ -81,11 +80,11 @@ export default function Archive(props){
 				<StatusBar style={theme} />
 				<Header page='archive' navigation={props.navigation} navBar={true} />
 				<GestureHandlerRootView style={containers.scroll}><GestureDetector gesture={swipe}><ScrollView>
-					<Text style={{...textStyle.label,...textColor[theme],textAlign:'center',margin: 16*PixelRatio.get()}}>
+					<Text style={{...textStyle.label,...textColor[theme],textAlign:'center',margin: 30}}>
 						{archive.day.display(mode,lang)}
 					</Text>
 					<View style={styles.wrap}>
-						<Text style={{...textStyle.label,...textColor[theme],paddingVertical:4*PixelRatio.get()}}>On that day, I was grateful for:</Text>
+						<Text style={{...textStyle.label,...textColor[theme],paddingVertical:7.5}}>On that day, I was grateful for:</Text>
 						<Text style={{...textStyle.body,...textColor[theme],...styles.gratitudes}}>1. {archive.gratitudes[0]}</Text>
 						<Text style={{...textStyle.body,...textColor[theme],...styles.gratitudes}}>2. {archive.gratitudes[1]}</Text>
 						<Text style={{...textStyle.body,...textColor[theme],...styles.gratitudes}}>3. {archive.gratitudes[2]}</Text>
@@ -107,19 +106,19 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'flex-start',
 		alignItems: 'center',
-		marginHorizontal: 16*PixelRatio.get(),
-		marginVertical: 8*PixelRatio.get(),
+		marginHorizontal: 30,
+		marginVertical: 15,
 	},
 	label: {
 		flex: 1,
 		alignContent: 'stretch',
 	},
 	wrap: {
-		marginHorizontal: 16*PixelRatio.get(),
-		marginVertical: 8*PixelRatio.get()
+		marginHorizontal: 30,
+		marginVertical: 15
 	},
 	gratitudes: {
-		marginStart: 12*PixelRatio.get(),
-		marginVertical: 4*PixelRatio.get(),
+		marginStart: 24,
+		marginVertical: 7.5,
 	}
 });

@@ -1,4 +1,4 @@
-import { Pressable, Text, StyleSheet, PixelRatio, Image, View } from "react-native";
+import { Pressable, Text, StyleSheet, Image, View } from "react-native";
 import { useContext, useState } from "react";
 
 import { icons, textColorInvert, textStyle, imageColorInvert, shadow } from "../assets/utils/common";
@@ -79,8 +79,8 @@ export function DialButton({icon, labels, actions}){
 						label={labels[i]} 
 						action={()=>handle(i)} 
 						style={{
-							marginHorizontal:16*PixelRatio.get(),
-							marginVertical:4*PixelRatio.get(),
+							marginHorizontal:30,
+							marginVertical:7.5,
 						}}
 					/>
 				)}
@@ -95,20 +95,20 @@ export function DialButton({icon, labels, actions}){
 const styles = StyleSheet.create({
 	button: {
 		backgroundColor: themeColors.primary.original,
-		paddingHorizontal: 16*PixelRatio.get(),
-		paddingVertical: 8*PixelRatio.get(),
-		borderRadius: 8*PixelRatio.get()
+		paddingHorizontal: 30,
+		paddingVertical: 15,
+		borderRadius: 15
 	},
 	combo: {
 		flex: 1,
 		flexDirection: 'row',
-		gap: 4*PixelRatio.get(),
+		gap: 7.5,
 		alignItems: 'center',
 	},
 	iconButton: {
-		paddingHorizontal: 8*PixelRatio.get(),
+		paddingHorizontal: 15,
 		alignSelf: 'flex-end',
-		margin: 16*PixelRatio.get(),
+		margin: 30,
 	},
 	hoverView: {
 		position: 'absolute',

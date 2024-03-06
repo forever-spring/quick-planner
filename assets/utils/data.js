@@ -228,10 +228,10 @@ export async function initDB(){
 	const db=sqlite.openDatabase('quickPlanner');
 
 	await db.execAsync([
-		{sql:'CREATE TABLE category(name TEXT NOT NULL, color TEXT NOT NULL)',args:[]},
-		{sql:'CREATE TABLE task(name TEXT NOT NULL, done INTEGER NOT NULL DEFAULT 0, category INTEGER NOT NULL, note TEXT DEFAULT \'\', FOREIGN KEY(category) REFERENCES category(rowid))',args:[]},
-		{sql:'CREATE TABLE plan(day TEXT, gratitudes TEXT)',args:[]},
-		{sql:'CREATE TABLE planned(task INTEGER NOT NULL, plan INTEGER NOT NULL, rank INTEGER NOT NULL, FOREIGN KEY(task) REFERENCES task(rowid), FOREIGN KEY(plan) REFERENCES plan(rowid))',args:[]}
+		{sql:'CREATE TABLE IF NOT EXISTS category(name TEXT NOT NULL, color TEXT NOT NULL)',args:[]},
+		{sql:'CREATE TABLE IF NOT EXISTS task(name TEXT NOT NULL, done INTEGER NOT NULL DEFAULT 0, category INTEGER NOT NULL, note TEXT DEFAULT \'\', FOREIGN KEY(category) REFERENCES category(rowid))',args:[]},
+		{sql:'CREATE TABLE IF NOT EXISTS plan(day TEXT, gratitudes TEXT)',args:[]},
+		{sql:'CREATE TABLE IF NOT EXISTS planned(task INTEGER NOT NULL, plan INTEGER NOT NULL, rank INTEGER NOT NULL, FOREIGN KEY(task) REFERENCES task(rowid), FOREIGN KEY(plan) REFERENCES plan(rowid))',args:[]}
 	],false);
 
 	db.closeAsync();
@@ -304,7 +304,7 @@ export async function getCategoriesFull(){
 	for(const cat of categories.rows){
 		category=new TaskCategory(cat.rowid,cat.name,cat.color);
 		[tasks]= await db.execAsync([
-			{sql:'SELECT rowid,* FROM task WHERE category=? ORDER BY name ASC',args:[cat.rowid]}
+			{sql:'SELECT rowid,* FROM task WHERE category=? ORDER BY done ASC, name ASC',args:[cat.rowid]}
 		],true);
 		tasks=tasks.rows.map(task=>new Task(task.rowid,task.name,task.done,task.note,category));
 		cats=cats.concat(new Category(category.id,category.name,category.color,tasks));
@@ -319,6 +319,15 @@ export async function addTask(label,note,category){
 		{sql:'INSERT INTO task(name,note,category) VALUES(?,?,?)',args:[label,note,Number(category)]}
 	],false);
 	db.closeAsync();
+}
+
+export async function getLastTask(){
+	const db=sqlite.openDatabase('quickPlanner');
+	const [last] = await db.execAsync([
+		{sql:'SELECT rowid FROM task ORDER BY rowid DESC LIMIT 1',args:[]}
+	],true);
+	db.closeAsync();
+	return last.rows[0].rowid;
 }
 
 export async function getExcludes(){
@@ -352,6 +361,24 @@ export async function getPlanned(plan){
 	planned=planned.rows;
 	db.closeAsync();
 	return planned.map(row=>new Planned(row.task,row.rank));
+}
+
+export async function upPlanned(plan,task,rank){
+	const db=sqlite.openDatabase('quickPlanner');
+	await db.execAsync([
+		{sql:'UPDATE planned SET rank=? WHERE plan=? AND rank=?',args:[rank,plan,rank-1]},
+		{sql:'UPDATE planned SET rank=? WHERE plan=? AND task=?',args:[rank-1,plan,task]}
+	],false);
+	db.closeAsync();
+}
+
+export async function downPlanned(plan,task,rank){
+	const db=sqlite.openDatabase('quickPlanner');
+	await db.execAsync([
+		{sql:'UPDATE planned SET rank=? WHERE plan=? AND rank=?',args:[rank,plan,rank+1]},
+		{sql:'UPDATE planned SET rank=? WHERE plan=? AND task=?',args:[rank+1,plan,task]}
+	],false);
+	db.closeAsync();
 }
 
 export async function delPlanned(plan,task){

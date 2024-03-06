@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, PixelRatio } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import { useState, useContext, useRef } from "react";
 
 import { TextButton } from "./buttons";
@@ -29,11 +29,11 @@ export function WarningModalTwo({text,back,ok}){
 		b: false,
 		c: false,
 	});
-	const [bHeight,setBHeight] = useState(50*PixelRatio.get());
-	const [cHeight,setCHeight] = useState(200*PixelRatio.get());
+	const [bHeight,setBHeight] = useState(100);
+	const [cHeight,setCHeight] = useState(400);
 	const calcBHeight = (h)=>{
 		if(!calc.current.b){
-			let newH = h + 16*PixelRatio.get();
+			let newH = h + 30;
 			if(calc.current.c){
 				setCHeight(cHeight+newH);
 			}
@@ -45,9 +45,9 @@ export function WarningModalTwo({text,back,ok}){
 		if(!calc.current.c){
 			let h = obj['nativeEvent']['layout']['height'];
 			if(calc.current.b){
-				setCHeight(h+bHeight+24*PixelRatio.get());
+				setCHeight(h+bHeight+45);
 			} else {
-				setCHeight(h+24*PixelRatio.get());
+				setCHeight(h+45);
 			}
 			calc.current.c=true;
 		}
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'flex-end',
 		alignItems: 'center',
-		gap: 4*PixelRatio.get(),
+		gap: 7.5,
 	},
 	light: {
 		backgroundColor: themeColors.light,

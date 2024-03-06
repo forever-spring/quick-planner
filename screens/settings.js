@@ -1,5 +1,5 @@
 import { StatusBar } from 'react-native';
-import { ScrollView, Text, View, Pressable, Image, StyleSheet, PixelRatio } from "react-native";
+import { ScrollView, Text, View, Pressable, Image, StyleSheet } from "react-native";
 import { useContext, useState } from "react";
 
 import Header from "../components/topBars";
@@ -35,7 +35,7 @@ function SettingItemOption({title,options,selected,dispatch}){
 
 	return(
 		<View style={styles.itemWrapper}>
-			<Text style={{...textStyle.label,...textColor[theme],verticalAlign:'top',paddingVertical:4*PixelRatio.get()}}>{title}</Text>
+			<Text style={{...textStyle.label,...textColor[theme],verticalAlign:'top',paddingVertical:7.5}}>{title}</Text>
 			{open ? (
 				<View style={styles.optionsWrapper}>
 					<Pressable style={styles.button} onPress={()=>{setOpen(false)}}><Text style={{...textStyle.body,...textColor.gray}}>{selected}</Text></Pressable>
@@ -77,18 +77,18 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'stretch',
-		paddingHorizontal: 12*PixelRatio.get(),
-		marginVertical: 6*PixelRatio.get(),
+		paddingHorizontal: 24,
+		marginVertical: 12,
 	},
 	optionsWrapper:{
 		flex: 1,
 		flexDirection: 'column',
 		justifyContent: 'flex-start',
 		alignItems: 'flex-end',
-		gap: 8*PixelRatio.get(),
+		gap: 15,
 	},
 	button:{
-		padding: 4*PixelRatio.get(),
+		padding: 7.5,
 	},
 });
 

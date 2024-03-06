@@ -1,5 +1,5 @@
 import { LinearGradient } from "expo-linear-gradient";
-import { View, Text, Image, Pressable, StyleSheet, PixelRatio, Modal } from "react-native";
+import { View, Text, Image, Pressable, StyleSheet, Modal } from "react-native";
 import { useContext, useEffect, useState } from "react";
 
 import { TaskModal, CategoryModal } from "./createModals";
@@ -10,7 +10,7 @@ import { settingsContext } from "../assets/utils/settings";
 import { textStyle, textColor, icons, imageColor, modalBasic, shadow } from "../assets/utils/common";
 import { categoryColors,themeColors } from "../assets/utils/colors";
 import { deleteWarn, infoModal } from "../assets/utils/translations";
-import { getExcludes } from "../assets/utils/data";
+import { getExcludes} from "../assets/utils/data";
 
 export function InfoModal({text,end}){
 	const theme = useContext(settingsContext).DarkTheme ? 'dark' : 'light';
@@ -24,7 +24,7 @@ export function InfoModal({text,end}){
 	);
 }
 
-export function PlannedItem({edit,planned,refresh}){
+export function PlannedItem({edit,planned,refresh,move,last}){
 	const theme = useContext(settingsContext).DarkTheme ? 'dark' : 'light';
 	
 	const [done, setDone] = useState(false);
@@ -50,6 +50,17 @@ export function PlannedItem({edit,planned,refresh}){
 		refresh(task.id);
 	};
 
+	const up = ()=>{
+		if(planned.rank!=1){
+			move(1,task.id,planned.rank);
+		}
+	};
+	const down = ()=>{
+		if(!last){
+			move(0,task.id,planned.rank);
+		}
+	}
+
 	const voidCallBack = ()=>{};
 
 	if(!task){} else {
@@ -60,9 +71,11 @@ export function PlannedItem({edit,planned,refresh}){
 						<InfoModal text={task.note} end={()=>setInfo(false)} />
 					</Modal>
 					<TapButton icon={done?'checkboxChecked':'checkbox'} action={flipDone} />
-					<Pressable onPress={()=>setInfo(true)} onLongPress={remove}>
+					<Pressable style={styles.plannedTitle} onPress={()=>setInfo(true)} onLongPress={remove}>
 						<Text style={{...textStyle.body,...textColor[theme]}}>{name}</Text>
 					</Pressable>
+					<TapButton icon={last?'clear':'down'} action={down} />
+					<TapButton icon={planned.rank==1?'clear':'up'} action={up} />
 				</View>
 			);
 		} else {
@@ -257,7 +270,10 @@ const iconSource = {
 	view: require('../assets/icons/view.png'),
 	copy: require('../assets/icons/copy.png'),
 	remove: require('../assets/icons/close.png'),
-	add: require('../assets/icons/add.png')
+	add: require('../assets/icons/add.png'),
+	down: require('../assets/icons/down.png'),
+	up: require('../assets/icons/up.png'),
+	clear: require('../assets/icons/clear.png'),
 };
 
 const styles = StyleSheet.create({
@@ -269,27 +285,30 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'flex-start',
 		alignItems: 'center',
-		padding: 4*PixelRatio.get(),
+		padding: 7.5,
 	},
 	wrap: {
-		marginBottom: 16*PixelRatio.get(),
+		marginBottom: 30,
 	},
 	label: {
 		flex: 1,
 		alignContent: 'stretch',
 	},
 	taskBlock: {
-		marginStart: 18*PixelRatio.get(),
+		marginStart: 30,
 	},
 	button: {
-		padding: 4*PixelRatio.get(),
+		padding: 7.5,
 	},
 	planned:{
 		flex: 1,
 		flexDirection: 'row',
 		justifyContent: 'flex-start',
 		alignItems: 'center',
-		padding: 4*PixelRatio.get(),
+		padding: 7.5,
+	},
+	plannedTitle:{
+		flexGrow: 1,
 	},
 	light: {
 		backgroundColor: themeColors.light,

@@ -1,6 +1,6 @@
 import * as SecureStore from 'expo-secure-store';
 import { StatusBar } from 'react-native';
-import { Text, View, ScrollView, StyleSheet, PixelRatio, TextInput, Modal } from "react-native";
+import { Text, View, ScrollView, StyleSheet, TextInput, Modal } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useContext, useState } from "react";
 
@@ -72,22 +72,22 @@ export default function Welcome({signal}){
 
 const styles = StyleSheet.create({
 	welcome: {
-		paddingVertical: 32*PixelRatio.get(),
+		paddingVertical: 60,
 		textAlign: 'center',
 	},
 	paragraphs: {
-		padding: 8*PixelRatio.get(),
+		padding: 15,
 	},
 	paragraph: {
-		padding: 8*PixelRatio.get(),
+		padding: 15,
 	},
 	form: {
 		flex:1,
 		flexDirection: 'column',
 		alignItems: 'stretch',
 		justifyContent: 'flex-start',
-		margin: 16*PixelRatio.get(),
-		gap: 16*PixelRatio.get(),
+		margin: 30,
+		gap: 30,
 	},
 	next: {
 		alignSelf: 'flex-end',

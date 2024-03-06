@@ -14,9 +14,9 @@ _You can download it from [HERE](https://github.com/solacode-ahw/quick-planner/b
 * Plan your days quickly and without hustle
 * Always keep your goal and your why in sight.
 * Write the date in any form you prefer.
-* Add your tasks and group them in categories. Categories are color coded.
+* Add your tasks and group them in categories. Categories can be color coded.
 * Write down 3 things you are grateful for each day to stay positive.
-* Add Tasks to your day to get them done, and cross them off when they're done.
+* Add Tasks to your day to get them done, reorder them as needed, and cross them off when they're done.
 * Review your past days if you like.
 * Supports English and Farsi.
 
@@ -28,7 +28,6 @@ _You can download it from [HERE](https://github.com/solacode-ahw/quick-planner/b
 ## In Future Updates
 * Group Categories by color when viewing
 * Import/Export
-* Ability to re-arrange the planned tasks in a day
 
 ## Contact Me
 * Do you have any issues with the app?

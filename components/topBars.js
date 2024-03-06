@@ -1,4 +1,4 @@
-import { View, Text, Image, Pressable, StyleSheet, PixelRatio, Dimensions } from "react-native";
+import { View, Text, Image, Pressable, StyleSheet, Dimensions } from "react-native";
 import { useState, useContext, useRef } from "react";
 
 import { settingsContext } from "../assets/utils/settings";
@@ -7,7 +7,7 @@ import { pageTitles } from "../assets/utils/translations";
 
 
 export default function Header({page, navigation, navBar}){
-	const [height,setHeight] = useState(10*PixelRatio.get());
+	const [height,setHeight] = useState(20);
 	const keys=useRef({
 		1: 0,
 		2: 0,
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'flex-end',
 		alignItems: 'center',
-		gap: 12*PixelRatio.get(),
+		gap: 22,
 	},
 	titleBar:{
 		flex: 1,
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
 		flexWrap: 'wrap',
 		justifyContent: 'space-between',
 		alignItems: 'center',
-		padding: 12*PixelRatio.get(),
+		padding: 22,
 	},
 	navBar:{
 		flex: 1,
@@ -142,6 +142,6 @@ const styles = StyleSheet.create({
 	},
 	navView:{
 		width:Dimensions.get('screen').width,
-		height:20*PixelRatio.get(),
+		height: 40,
 	},
 });

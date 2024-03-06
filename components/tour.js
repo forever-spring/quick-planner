@@ -1,4 +1,4 @@
-import { StyleSheet, View, Image, PixelRatio } from "react-native";
+import { StyleSheet, View, Image } from "react-native";
 import { useContext, useState } from "react";
 
 import { TextButton, IconButton } from "./buttons";
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
 	wrap:{
 		width: '100%',
 		height: '100%',
-		padding: 0*PixelRatio.get(),
+		padding: 0,
 	},
 	button: {
 		alignSelf: 'center',
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
 		marginHorizontal: '10%',
 		resizeMode: 'stretch',
 		borderColor: themeColors.accent.original+'55',
-		borderWidth: 0.75*PixelRatio.get(),
-		borderRadius: 8*PixelRatio.get(),
+		borderWidth: 1,
+		borderRadius: 15,
 	}
 });

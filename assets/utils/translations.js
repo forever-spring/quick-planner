@@ -188,6 +188,10 @@ export const planPage = {
 		en: 'Week Day',
 		fa: 'روز هفته',
 	},
+	newTask: {
+		en: 'Add New Task',
+		fa: 'افزودن کار جدید',
+	},
 };
 
 export const listPage = {

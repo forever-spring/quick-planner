@@ -1,5 +1,5 @@
 import * as SecureStore from 'expo-secure-store';
-import { View, Image, Text, Pressable, StyleSheet, PixelRatio, Modal, TextInput } from "react-native";
+import { View, Image, Text, Pressable, StyleSheet, Modal, TextInput } from "react-native";
 import { useContext, useEffect, useState } from 'react';
 
 import { TextButton } from './buttons';
@@ -92,11 +92,11 @@ const styles = StyleSheet.create({
 		shadowOffset:{width:0,height:0},
 		shadowOpacity:0.5,
 		shadowRadius: 4,
-		borderRadius: 8*PixelRatio.get(),
+		borderRadius: 15,
 		flex: 1,
-		padding: 16*PixelRatio.get(),
-		gap: 16*PixelRatio.get(),
-		margin: 8*PixelRatio.get(),
+		padding: 30,
+		gap: 30,
+		margin: 15,
 		backgroundColor: themeColors.light,
 	},
 	dark: {
@@ -105,11 +105,11 @@ const styles = StyleSheet.create({
 		shadowOffset:{width:0,height:0},
 		shadowOpacity:0.5,
 		shadowRadius: 4,
-		borderRadius: 8*PixelRatio.get(),
+		borderRadius: 15,
 		flex: 1,
-		padding: 16*PixelRatio.get(),
-		gap: 16*PixelRatio.get(),
-		margin: 8*PixelRatio.get(),
+		padding: 30,
+		gap: 30,
+		margin: 15,
 		backgroundColor: themeColors.dark,
 	},
 	item: {
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'flex-start',
 		alignItems: 'center',
-		gap: 8*PixelRatio.get(),
+		gap: 15,
 	},
 	text: {
 		flex: 1,
@@ -130,16 +130,16 @@ const modals = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'stretch',
-		gap: 16*PixelRatio.get(),
-		padding: 16*PixelRatio.get(),
+		gap: 30,
+		padding: 30,
 	},
 	dark: {
 		backgroundColor: themeColors.dark+'dd',
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'stretch',
-		gap: 16*PixelRatio.get(),
-		padding: 16*PixelRatio.get(),
+		gap: 30,
+		padding: 30,
 	},
 	button: {
 		alignSelf: 'center',
