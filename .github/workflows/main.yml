@@ -50,10 +50,10 @@ jobs:
         eas-version: latest
 
     - name: 📦 Install dependencies
-      run: yarn
+      run: npm
 
     - name: 📋 Test project
-      run: yarn test
+      run: npm test
 
     - name: 👷 Build app
       run: |
