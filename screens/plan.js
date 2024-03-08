@@ -152,7 +152,7 @@ function PlannedComponent({focus,planId}){
 					<ScrollView>
 						{categories.current.map(cat=><CategoryItem category={cat} full={false} picked={picked} />)}
 					</ScrollView>
-					<TextIconButton icon='add' label={planPage.newTask[lang]} action={()=>setTaskModal(true)} style={{maxHeight:50,justifyContent:'center'}} />
+					<TextIconButton icon='add' label={planPage.newTask[lang]} action={()=>setTaskModal(true)} style={{justifyContent:'center'}} />
 				</View></View>
 			</Modal>
 			<Modal transparent={true} visible={taskModal} animationType="fade" onRequestClose={()=>setTaskModal(false)}>

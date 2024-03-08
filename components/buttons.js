@@ -1,4 +1,4 @@
-import { Pressable, Text, StyleSheet, Image, View } from "react-native";
+import { Pressable, Text, StyleSheet, Image, View, PixelRatio } from "react-native";
 import { useContext, useState } from "react";
 
 import { icons, textColorInvert, textStyle, imageColorInvert, shadow } from "../assets/utils/common";
@@ -104,6 +104,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		gap: 7.5,
 		alignItems: 'center',
+		height: Math.max(20,30*PixelRatio.getFontScale()),
 	},
 	iconButton: {
 		paddingHorizontal: 15,
