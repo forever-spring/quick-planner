@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		gap: 7.5,
 		alignItems: 'center',
-		height: Math.max(20,30*PixelRatio.getFontScale()),
+		height: Math.max(20,30*PixelRatio.getFontScale())+30,
 	},
 	iconButton: {
 		paddingHorizontal: 15,

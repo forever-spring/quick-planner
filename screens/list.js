@@ -50,6 +50,7 @@ export default function List(props){
 			<Header page='list' navigation={props.navigation} navBar={true} />
 			<GestureHandlerRootView style={containers.scroll}><GestureDetector gesture={swipe}><ScrollView>
 				{categories.map(cat=><CategoryItem category={cat} full={true} refresh={refresh} />)}
+				<View style={{height:75}}></View>
 			</ScrollView></GestureDetector></GestureHandlerRootView>
 			<DialButton 
 				icon='add' 

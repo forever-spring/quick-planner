@@ -87,6 +87,7 @@ export default function Plan(props){
 					<DayComponent day={plan.day} />
 					<GratitudesComponent values={plan.getGratitudes()} action={setGratitudes} />
 					<PlannedComponent focus={focus} planId={plan.id} />
+					<View style={{height:50}}></View>
 				</ScrollView></GestureDetector></GestureHandlerRootView>
 				<HoverButton icon='archive' action={()=>setWarning(true)} />
 				<Modal transparent={true} onRequestClose={()=>setWarning(false)} animationType="fade" visible={warning}>
