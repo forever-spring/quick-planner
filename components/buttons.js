@@ -106,6 +106,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		height: Math.max(20,30*PixelRatio.getFontScale())+30,
 		flexGrow: 0,
+		flexShrink: 0,
 	},
 	iconButton: {
 		paddingHorizontal: 15,
