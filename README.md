@@ -1,3 +1,6 @@
+# A NEW VERSION IS COMING
+I have started to re-develop this daily planner, with a new design, and a new name! With all I have had learned about React Native, this new version will have a cleaner and more efficient code.
+
 # Quick Planner
 Quick Planner is a mobile application that helps you to plan your tasks quickly and with ease, free of complexity of other planners while helping you stay positive!
 
