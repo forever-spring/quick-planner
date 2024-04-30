@@ -1,5 +1,6 @@
 # A NEW VERSION IS AVAILABLE
 I have re-developed this daily planner, with a new design, and a new name! With all I have had learned about React Native, this new version has a cleaner and more efficient code.
+
 It is available [HERE](https://github.com/solacode-ahw/planly)
 
 # Quick Planner
