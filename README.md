@@ -1,5 +1,6 @@
-# A NEW VERSION IS COMING
-I have started to re-develop this daily planner, with a new design, and a new name! With all I have had learned about React Native, this new version will have a cleaner and more efficient code.
+# A NEW VERSION IS AVAILABLE
+I have re-developed this daily planner, with a new design, and a new name! With all I have had learned about React Native, this new version has a cleaner and more efficient code.
+It is available [HERE](https://github.com/solacode-ahw/planly)
 
 # Quick Planner
 Quick Planner is a mobile application that helps you to plan your tasks quickly and with ease, free of complexity of other planners while helping you stay positive!
@@ -7,10 +8,6 @@ Quick Planner is a mobile application that helps you to plan your tasks quickly 
 It is written with React Native and Expo, made with love by
 
 ![SolaCode](/assets/graphics/logo.png)
-
-_It is currently only available for android!_
-
-_You can download it from [HERE](https://github.com/solacode-ahw/quick-planner/blob/master/app/QuickPlanner.apk)_
 
 ## Features
 * Easy to use
